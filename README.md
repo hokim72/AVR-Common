@@ -13,7 +13,7 @@ $ git clone https://github.com/hokim72/AVR-Common.git
 ```
 export PATH=$PATH:/opt/avr8-gnu-toolchain-linux_x86_64/bin
 export AVR_ROOT=/opt/avr8-gnu-toolchain-linux_x86_64/avr
-export AVR_COMMON=$HOME/work/avr/common
+export AVR_COMMON=$HOME/work/AVR-Common
 ```
 ```
 $ source ~/.bashrc
