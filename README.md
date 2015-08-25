@@ -2,6 +2,13 @@
 
 #### [CMake](http://www.cmake.org)
 #### [Atmel AVR8 Toolchain](http://www.atmel.com/forms/software-download.aspx?target=tcm:26-64140)
+#### AVRDUDE
+```
+$ wget https://copr-be.cloud.fedoraproject.org/results/jlindeberg/arduino-epel7/epel-7-x86_64/avrdude-6.1-2.fc22/avrdude-6.1-2.el7.centos.x86_64.rpm
+$ sudo yum install libftdi
+$ sudo rpm -ivh avrdude-6.1-2.el7.centos.x86_64.rpm
+$ sudo usermod -a -G dialout hokim
+```
 
 ## Setup
 
