@@ -36,6 +36,8 @@ http://homepage.hispeed.ch/peterfleury/avr-software.html
 
 [LUFA](http://www.fourwalledcubicle.com/LUFA.php)
 
+[How To Write Simple Bootloader For AVR In C language](http://www.engineersgarage.com/embedded/avr-microcontroller-projects/How-To-Write-a-Simple-Bootloader-For-AVR-In-C-language)
+
 #### AVR USB Bootloader
 
 [USnoobie Kit](http://www.seeedstudio.com/wiki/Usnoobie_Kit)
