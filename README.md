@@ -10,6 +10,8 @@ $ sudo rpm -ivh avrdude-6.1-2.el7.centos.x86_64.rpm
 $ sudo usermod -a -G dialout hokim
 ```
 
+[Avrdude Test](http://techareg.net/AvrProgrammer.html)
+
 ## Setup
 
 ```
