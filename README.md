@@ -27,3 +27,18 @@ alias cmake-avr='cmake -DCMAKE_TOOLCHAIN_FILE=$AVR_COMMON/gcc-avr.cmake'
 ```
 $ source ~/.bashrc
 ```
+
+## AVR Software
+
+http://homepage.hispeed.ch/peterfleury/avr-software.html
+
+[busy-wait delay loops](http://www.nongnu.org/avr-libc/user-manual/group__util__delay.html)
+
+[LUFA](http://www.fourwalledcubicle.com/LUFA.php)
+
+#### AVR USB Bootloader
+
+[USnoobie Kit](http://www.seeedstudio.com/wiki/Usnoobie_Kit)
+
+[HID-class USB Serial Communication for AVRs using V-USB](http://rayshobby.net/hid-class-usb-serial-communication-for-avrs-using-v-usb/)
+
