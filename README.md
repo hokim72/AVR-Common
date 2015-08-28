@@ -46,3 +46,4 @@ http://homepage.hispeed.ch/peterfleury/avr-software.html
 
 [HID-class USB Serial Communication for AVRs using V-USB](http://rayshobby.net/hid-class-usb-serial-communication-for-avrs-using-v-usb/)
 
+[Installing Arduino Bootloader on an ATmega32u4](http://electronut.in/bootloader-atmega32u4/)
