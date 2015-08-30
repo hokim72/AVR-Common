@@ -34,7 +34,7 @@ $ source ~/.bashrc
 #### [Hex file for Arduino ](ArduinoISP.hex)
 #### Arduino to ICSP Connection
 
-1. Pin12 to ICSP MISO
+1. Pin12  ---  MISO
 
 2. Arduino VCC	to ICSP VCC
 
