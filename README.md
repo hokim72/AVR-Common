@@ -49,7 +49,7 @@ Arduino GND to GND
 #### Avrdude Usage
 
 ```
-avrdude -p atmega328p -c avrisp -P /dev/ttyUSB0 -b 19200 -e -U flash:w:firmware.hex
+$ avrdude -p atmega328p -c avrisp -P /dev/ttyUSB0 -b 19200 -e -U flash:w:firmware.hex
 ```
 
 ## AVR Software
