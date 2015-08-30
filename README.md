@@ -30,6 +30,28 @@ alias cmake-avr='cmake -DCMAKE_TOOLCHAIN_FILE=$AVR_COMMON/gcc-avr.cmake'
 $ source ~/.bashrc
 ```
 
+## Arduino as ISP programmer
+#### [Hex file for Arduino ](ArduinoISP.hex)
+#### Arduino to ICSP Connection
+
+Arduino Pin13 to ICSP SCK
+
+Arduino Pin12 to ICSP MISO
+
+Arduino Pin11 to ICSP MOSI
+
+Arduino Pin10 to ICSP RESET
+
+Arduino VCC	to ICSP VCC
+
+Arduino GND to GND
+
+#### Avrdude Usage
+
+```
+avrdude -p atmega328p -c avrisp -P /dev/ttyUSB0 -b 19200 -e -U flash:w:firmware.hex
+```
+
 ## AVR Software
 
 http://homepage.hispeed.ch/peterfleury/avr-software.html
@@ -49,3 +71,5 @@ http://homepage.hispeed.ch/peterfleury/avr-software.html
 [Installing Arduino Bootloader on an ATmega32u4](http://electronut.in/bootloader-atmega32u4/)
 
 https://github.com/arduino/Arduino/tree/master/hardware/arduino/avr/bootloaders/caterina
+
+[DAN64, An AVR based 8-bit microcomputer](http://www.usebox.net/jjm/dan64/)
