@@ -62,6 +62,8 @@ http://homepage.hispeed.ch/peterfleury/avr-software.html
 
 [How To Write Simple Bootloader For AVR In C language](http://www.engineersgarage.com/embedded/avr-microcontroller-projects/How-To-Write-a-Simple-Bootloader-For-AVR-In-C-language)
 
+[Analyzing Compiler Generated Machine Code(.lss)](http://msoe.us/taylor/tutorial/ce2810/lssfiles)
+
 #### AVR USB Bootloader
 
 [USnoobie Kit](http://www.seeedstudio.com/wiki/Usnoobie_Kit)
