@@ -34,17 +34,17 @@ $ source ~/.bashrc
 #### [Hex file for Arduino ](ArduinoISP.hex)
 #### Arduino to ICSP Connection
 
-Arduino Pin13 to ICSP SCK
+1. Pin12 to ICSP MISO
 
-Arduino Pin12 to ICSP MISO
+2. Arduino VCC	to ICSP VCC
 
-Arduino Pin11 to ICSP MOSI
+3. Arduino Pin13 to ICSP SCK
 
-Arduino Pin10 to ICSP RESET
+4. Arduino Pin11 to ICSP MOSI
 
-Arduino VCC	to ICSP VCC
+5. Arduino Pin10 to ICSP RESET
 
-Arduino GND to GND
+6. Arduino GND to GND
 
 #### Avrdude Usage
 
