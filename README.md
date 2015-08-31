@@ -34,17 +34,17 @@ $ source ~/.bashrc
 #### [Hex file for Arduino ](ArduinoISP.hex)
 #### Arduino to ICSP Connection
 
-1. Pin12 --- MISO
+1. Pin12 --- MISO (yellow)
 
-2. VCC --- VCC
+2. VCC --- VCC (red)
 
-3. Pin13 --- SCK
+3. Pin13 --- SCK (green)
 
-4. Pin11 --- MOSI
+4. Pin11 --- MOSI (blue)
 
-5. Pin10 --- RESET
+5. Pin10 --- RESET (magenta)
 
-6. GND --- GND
+6. GND --- GND (black)
 
 #### Avrdude Usage
 
