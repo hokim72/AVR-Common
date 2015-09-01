@@ -64,6 +64,8 @@ http://homepage.hispeed.ch/peterfleury/avr-software.html
 
 [Analyzing Compiler Generated Machine Code(.lss)](http://msoe.us/taylor/tutorial/ce2810/lssfiles)
 
+[Anatomy of AVR hex file](https://rajeshkovvuri.wordpress.com/2011/10/28/anatomy-of-avr-hex-file/)
+
 #### AVR USB Bootloader
 
 [USnoobie Kit](http://www.seeedstudio.com/wiki/Usnoobie_Kit)
