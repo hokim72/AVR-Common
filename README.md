@@ -64,7 +64,6 @@ http://homepage.hispeed.ch/peterfleury/avr-software.html
 
 [Analyzing Compiler Generated Machine Code(.lss)](http://msoe.us/taylor/tutorial/ce2810/lssfiles)
 
-[Anatomy of AVR hex file](https://rajeshkovvuri.wordpress.com/2011/10/28/anatomy-of-avr-hex-file/)
 
 #### AVR USB Bootloader
 
@@ -77,3 +76,10 @@ http://homepage.hispeed.ch/peterfleury/avr-software.html
 https://github.com/arduino/Arduino/tree/master/hardware/arduino/avr/bootloaders/caterina
 
 [DAN64, An AVR based 8-bit microcomputer](http://www.usebox.net/jjm/dan64/)
+
+
+#### Anatomy of AVR hex file
+
+https://rajeshkovvuri.wordpress.com/2011/10/28/anatomy-of-avr-hex-file
+
+https://en.wikipedia.org/wiki/Intel_HEX
