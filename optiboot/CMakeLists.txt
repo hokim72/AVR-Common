@@ -6,13 +6,13 @@ set(BAUD 115200)
 set(OPTIMIZATION s)
 
 set(PROG_TYPE avrisp)
-set(PROG_ARGS -P /dev/ttyUSB0 -b 19200 -U lfuse:w:0xff:m -U hfuse:w:0xda:m -U efuse:w:0x05:m)
+set(PROG_ARGS -P /dev/ttyUSB0 -b 19200 -U lfuse:w:0xff:m -U hfuse:w:0xdc:m -U efuse:w:0x05:m)
 
 set(TARGET optiboot_atmega328)
 
 set(CPP_FLAGS "-DF_CPU=${F_CPU} -DBAUD_RATE=${BAUD} -DLED_START_FLASHES=3 -DVIRTUAL_BOOT")
 set(C_FLAGS "-O${OPTIMIZATION} -fno-inline-small-functions -fno-split-wide-types -mmcu=${MCU}")
-set(LD_FLAGS "-mmcu=${MCU} -Wl,--section-start=.text=0x7800 -Wl,--section-start=.version=0x7ffe -Wl,--relax -Wl,--gc-sections -nostartfiles -nostdlib")
+set(LD_FLAGS "-mmcu=${MCU} -Wl,--section-start=.text=0x7C00 -Wl,--section-start=.version=0x7ffe -Wl,--relax -Wl,--gc-sections -nostartfiles -nostdlib")
 
 set(SRCS optiboot.c)
 
