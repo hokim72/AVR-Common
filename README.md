@@ -83,3 +83,7 @@ https://github.com/arduino/Arduino/tree/master/hardware/arduino/avr/bootloaders/
 https://rajeshkovvuri.wordpress.com/2011/10/28/anatomy-of-avr-hex-file
 
 https://en.wikipedia.org/wiki/Intel_HEX
+
+#### Dump and Disassemble AVR uC Flash Memory
+
+https://ucexperiment.wordpress.com/2015/01/04/dump-and-disassemble-avr-%C2%B5c-flash-memory/
