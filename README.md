@@ -64,6 +64,20 @@ http://homepage.hispeed.ch/peterfleury/avr-software.html
 
 [Analyzing Compiler Generated Machine Code(.lss)](http://msoe.us/taylor/tutorial/ce2810/lssfiles)
 
+#### .data section
+```
+The .data section contains data definitions of initialized data items. Initialized data is data that has a value before the program begins running. These values are part of the executable file. They are loaded into memory when the executable file is loaded into memory for execution.
+
+The important thing to remember about the .data section is that the more initialized data items you define, the larger the executable file will be, and the longer it will take to load it from disk into memory when you run it.
+```
+
+#### .bss section
+```
+Not all data items need to have values before the program begins running. When you’re reading data from a disk file, for example, you need to have a place for the data to go after it comes in from disk. Data buffers like that are defined in the .bss section of your program. You set aside some number of bytes for a buffer and give the buffer a name, but you don’t say what values are to be present in the buffer.
+
+There’s a crucial difference between data items defined in the .data section and data items defined in the .bss section: data items in the .data section add to the size of your executable file. Data items in the .bss section do not. A buffer that takes up 16,000 bytes (or more, sometimes much more) can be defined in .bss and add almost nothing (about 50 bytes for the description) to the executable file size.
+```
+
 
 #### AVR USB Bootloader
 
