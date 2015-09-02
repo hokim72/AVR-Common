@@ -67,6 +67,7 @@ http://homepage.hispeed.ch/peterfleury/avr-software.html
 #### .data section
 
 > The .data section contains data definitions of initialized data items. Initialized data is data that has a value before the program begins running. These values are part of the executable file. They are loaded into memory when the executable file is loaded into memory for execution.
+
 > The important thing to remember about the .data section is that the more initialized data items you define, the larger the executable file will be, and the longer it will take to load it from disk into memory when you run it.
 
 #### .bss section
