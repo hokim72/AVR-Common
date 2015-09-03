@@ -64,6 +64,12 @@ http://homepage.hispeed.ch/peterfleury/avr-software.html
 
 [Analyzing Compiler Generated Machine Code(.lss)](http://msoe.us/taylor/tutorial/ce2810/lssfiles)
 
+#### How to convert .c to .S
+
+```
+$ avr-gcc -Os -S -DF_CPU=8000000 -mmcu=atmega328p somecode.c
+```
+
 #### .data section
 
 > The .data section contains data definitions of initialized data items. Initialized data is data that has a value before the program begins running. These values are part of the executable file. They are loaded into memory when the executable file is loaded into memory for execution.
