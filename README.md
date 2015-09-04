@@ -48,8 +48,14 @@ $ source ~/.bashrc
 
 #### Avrdude Usage
 
+ArduinoISP programmer
 ```
 $ avrdude -p atmega328p -c avrisp -P /dev/ttyUSB0 -b 19200 -e -U flash:w:firmware.hex
+```
+
+Usbasp programmer
+```
+$ avrdude -p atmega328p -c usbasp -e -U flash:w:firmware.hex
 ```
 
 ## AVR Software
