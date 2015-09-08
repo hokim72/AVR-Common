@@ -7,7 +7,7 @@ set(OPTIMIZATION s)
 
 set(PROG_TYPE usbasp)
 set(PROG_ARGS)
-set(FUSE_FLAGS -U lfuse:w:0xff:m -U hfuse:w:0xdc:m -U efuse:w:0x05:m)
+set(FUSE_FLAGS -U lfuse:w:0xff:m -U hfuse:w:0xd4:m -U efuse:w:0x05:m)
 
 set(TARGET optiboot_atmega328)
 
