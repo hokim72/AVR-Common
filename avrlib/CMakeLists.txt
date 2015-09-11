@@ -12,7 +12,7 @@ set(TARGET avrlib-${MCU})
 set(CPP_FLAGS "-mmcu=${MCU}")
 set(C_FLAGS "-O${OPTIMIZATION} -g -std=${C_STANDARD} -Wall -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections")
 
-set(SRCS buffer.c uart.c rprintf.c timer.c uartsw.c uartsw2.c)
+set(SRCS buffer.c uart.c rprintf.c timer.c uartsw.c uartsw2.c pulse.c)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} conf)
 add_library(${TARGET} STATIC ${SRCS})
