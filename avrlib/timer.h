@@ -45,6 +45,7 @@
 #define TIMER_H
 
 #include "global.h"
+#include <avr/io.h>
 
 // Timer/clock prescaler values and timer overflow rates
 // tics = rate at which the timer counts up
@@ -114,9 +115,16 @@
 // interrupt macros for attaching user functions to timer interrupts
 // use these with timerAttach(intNum, function)
 #define	TIMER0OVERFLOW_INT			0
-#define	TIMER1OVERFLOW_INT			1
-#define	TIMER2OVERFLOW_INT			2
-#define TIMER_NUM_INTERRUPTS		3
+#define TIMER0OUTCOMPAREA_INT       1
+#define TIMER0OUTCOMPAREB_INT       2
+#define	TIMER1OVERFLOW_INT			3
+#define TIMER1OUTCOMPAREA_INT       4
+#define TIMER1OUTCOMPAREB_INT       5
+#define TIMER1INPUTCAPTURE_INT      6
+#define	TIMER2OVERFLOW_INT			7
+#define TIMER2OUTCOMPAREA_INT       8
+#define TIMER2OUTCOMPAREB_INT       9
+#define TIMER_NUM_INTERRUPTS		10
 
 // default type of interrupt handler to use for timers
 // do not change unless you know what you're dong

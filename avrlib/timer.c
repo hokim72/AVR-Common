@@ -342,3 +342,59 @@ ISR(TIMER2_OVF_vect)
 	if (TimerIntFunc[TIMER2OVERFLOW_INT])
 		TimerIntFunc[TIMER2OVERFLOW_INT]();
 }
+
+// Interrupt handler for OutputCompare0A match (OC0A) interrupt
+ISR(TIMER0_COMPA_vect)
+{
+	// if a user function is defined, execute it
+	if (TimerIntFunc[TIMER0OUTCOMPAREA_INT])
+		TimerIntFunc[TIMER0OUTCOMPAREA_INT]();
+}
+
+// Interrupt handler for OutputCompare0B match (OC0B) interrupt
+ISR(TIMER0_COMPB_vect)
+{
+	// if a user function is defined, execute it
+	if (TimerIntFunc[TIMER0OUTCOMPAREB_INT])
+		TimerIntFunc[TIMER0OUTCOMPAREB_INT]();
+}
+
+// Interrupt handler for OutputCompare1A match (OC1A) interrupt
+ISR(TIMER1_COMPA_vect)
+{
+	// if a user function is defined, execute it
+	if (TimerIntFunc[TIMER1OUTCOMPAREA_INT])
+		TimerIntFunc[TIMER1OUTCOMPAREA_INT]();
+}
+
+// Interrupt handler for OutputCompare1B match (OC1B) interrupt
+ISR(TIMER1_COMPB_vect)
+{
+	// if a user function is defined, execute it
+	if (TimerIntFunc[TIMER1OUTCOMPAREB_INT])
+		TimerIntFunc[TIMER1OUTCOMPAREB_INT]();
+}
+
+// Interrupt handler for OutputCompare2A match (OC2A) interrupt
+ISR(TIMER2_COMPA_vect)
+{
+	// if a user function is defined, execute it
+	if (TimerIntFunc[TIMER2OUTCOMPAREA_INT])
+		TimerIntFunc[TIMER2OUTCOMPAREA_INT]();
+}
+
+// Interrupt handler for OutputCompare2B match (OC2B) interrupt
+ISR(TIMER2_COMPB_vect)
+{
+	// if a user function is defined, execute it
+	if (TimerIntFunc[TIMER2OUTCOMPAREB_INT])
+		TimerIntFunc[TIMER2OUTCOMPAREB_INT]();
+}
+
+// Interrupt handler for InputCapture1 (IC1) interrupt
+ISR(TIMER1_CAPT_vect)
+{
+	// if a user function is defined, execute it
+	if (TimerIntFunc[TIMER1INPUTCAPTURE_INT])
+		TimerIntFunc[TIMER1INPUTCAPTURE_INT]();
+}

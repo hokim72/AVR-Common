@@ -1,6 +1,5 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "global.h"
 #include "uart.h"
 #include "rprintf.h"
 #include "timer.h"

@@ -1,4 +1,3 @@
-#include "global.h"
 #include "uart.h"
 #include "rprintf.h"
 

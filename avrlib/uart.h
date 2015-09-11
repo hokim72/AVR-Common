@@ -33,7 +33,6 @@
 #include "global.h"
 #include "buffer.h"
 #include <avr/io.h>
-#include <avr/interrupt.h>
 
 // Default uart baud rate.
 // This is the default speed after a uartInit() command,

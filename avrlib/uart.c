@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 #include "buffer.h"
 #include "uart.h"
@@ -28,8 +29,15 @@ void uartInit(void)
 	// initialize user receive handler
 	UartRxFunc = 0;
 
+#if USE_2X
+	sbi(UCSR0A, U2X0);
+#else
+	cbi(UCSR0A, U2X0);
+#endif
+
 	// enable RxD/TxD and interrupts
 	outb(UCSR0B, BV(RXCIE0)|BV(TXCIE0)|BV(RXEN0)|BV(TXEN0));
+	outb(UCSR0C, BV(UCSZ01)|BV(UCSZ00)); /* 8 data bits, 1 stop bit */
 
 	// set default baud rate
 	uartSetBaudRate(UART_DEFAULT_BAUD_RATE);
