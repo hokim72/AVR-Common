@@ -1,6 +1,5 @@
 #include "uart.h"
 
-
 int main(void)
 {
 	// initialize our libraries

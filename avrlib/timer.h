@@ -104,12 +104,15 @@
 #define TIMER_CLK_T_RISE		0x07		// Timer clocked at T rising edge
 #define TIMER_PRESCALE_MASK		0x07		// Timer Prescaler Bit-Mask
 
+
 // default prescale settings for the timers
 // these settings are applied when you call
 // timerInit or any of the timer<x>Init
 #define TIMER0PRESCALE		TIMER_CLK_DIV8	    // timer 0 prescaler default
 #define TIMER1PRESCALE		TIMER_CLK_DIV64	    // timer 1 prescaler default
+#ifdef TCNT2
 #define TIMER2PRESCALE		TIMER_CLK_DIV64		// timer 2 prescaler default
+#endif
 
 
 // interrupt macros for attaching user functions to timer interrupts
@@ -121,10 +124,14 @@
 #define TIMER1OUTCOMPAREA_INT       4
 #define TIMER1OUTCOMPAREB_INT       5
 #define TIMER1INPUTCAPTURE_INT      6
+#ifdef TCNT2
 #define	TIMER2OVERFLOW_INT			7
 #define TIMER2OUTCOMPAREA_INT       8
 #define TIMER2OUTCOMPAREB_INT       9
 #define TIMER_NUM_INTERRUPTS		10
+#else
+#define TIMER_NUM_INTERRUPTS		7
+#endif
 
 // default type of interrupt handler to use for timers
 // do not change unless you know what you're dong
@@ -142,7 +149,9 @@ void timerInit(void);
 // default initialization routines for each timer
 void timer0Init(void);		// initialize timer0
 void timer1Init(void);		// initialize timer1
+#ifdef TCNT2
 void timer2Init(void);		// initialize timer2
+#endif
 
 // Clock prescaler set/get commands for each timer/counter
 // For setting the prescaler, you should use one of the #defines
@@ -154,8 +163,10 @@ void timer0SetPrescaler(uint8_t prescale);		// set timer0 prescaler
 uint16_t timer0GetPrescaler(void);				// get timer0 prescaler
 void timer1SetPrescaler(uint8_t prescale);		// set timer1 prescaler
 uint16_t timer1GetPrescaler(void);				// get timer1 prescaler
+#ifdef TCNT2
 void timer2SetPrescaler(uint8_t prescale);		// set timer2 prescaler
 uint16_t timer2GetPrescaler(void);				// get timer2 prescaler
+#endif
 
 // TimerAttach and Detach commands
 // 		Thes functions allow the attachment (or detachment) of any user fucntion
@@ -191,8 +202,10 @@ void timerPause(unsigned short pause_ms);
 // overflow counters
 void timer0ClearOverflowCount(void);	// Clear timer0's overflow counter.
 long timer0GetOverflowCount(void);		// read timer0's overflow counter
+#ifdef TCNT2
 void timer2ClearOverflowCount(void);	// clear timer2's overflow counter
 long timer2GetOverflowCount(void);		// read timer2's overflow counter
+#endif
 
 // Timer PWM Commands
 // These commands control PWM functionality on timer1

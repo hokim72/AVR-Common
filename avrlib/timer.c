@@ -15,7 +15,9 @@ const unsigned short PROGMEM TimerPrescaleFactor[] = {0, 1, 8, 64, 256, 1024};
 // time registers
 volatile unsigned long TimerPauseReg;
 volatile unsigned long Timer0Reg0;
+#ifdef TCNT2
 volatile unsigned long Timer2Reg0;
+#endif
 
 typedef void (*voidFuncPtr)(void);
 volatile static voidFuncPtr TimerIntFunc[TIMER_NUM_INTERRUPTS];
@@ -44,8 +46,9 @@ void timerInit(void)
 	// initialize all timers
 	timer0Init();
 	timer1Init();
+#ifdef TCNT2
 	timer2Init();
-
+#endif
 	// enable interrupts
 	sei();
 }
@@ -69,6 +72,7 @@ void timer1Init()
 	sbi(TIMSK1, TOIE1);						// enable TCNT1 overflow interrupt
 }
 
+#ifdef TCNT2
 void timer2Init(void)
 {
 	// initialize timer 2
@@ -78,6 +82,7 @@ void timer2Init(void)
 
 	timer2ClearOverflowCount();				// initialize time registers
 }
+#endif
 
 void timer0SetPrescaler(uint8_t prescale)
 {
@@ -91,11 +96,13 @@ void timer1SetPrescaler(uint8_t prescale)
 	outb(TCCR1B, (inb(TCCR1B) & ~TIMER_PRESCALE_MASK) | prescale);
 }
 
+#ifdef TCNT2
 void timer2SetPrescaler(uint8_t prescale)
 {
 	// set prescaler on timer 2
 	outb(TCCR2B, (inb(TCCR2B) & ~TIMER_PRESCALE_MASK) | prescale);
 }
+#endif
 
 uint16_t timer0GetPrescaler(void)
 {
@@ -109,11 +116,13 @@ uint16_t timer1GetPrescaler(void)
 	return (pgm_read_word(TimerPrescaleFactor+(inb(TCCR1B) & TIMER_PRESCALE_MASK)));
 }
 
+#ifdef TCNT2
 uint16_t timer2GetPrescaler(void)
 {
 	// get the current prescaler setting
 	return (pgm_read_word(TimerPrescaleFactor+(inb(TCCR2B) & TIMER_PRESCALE_MASK)));
 }
+#endif
 
 void timerAttach(uint8_t interruptNum, void (*userFunc)(void))
 {
@@ -183,18 +192,22 @@ long timer0GetOverflowCount(void)
 	return Timer0Reg0;
 }
 
+#ifdef TCNT2
 void timer2ClearOverflowCount(void)
 {
 	// clear the timer overflow counter registers
 	Timer2Reg0 = 0; // initialize time registers
 }
+#endif
 
+#ifdef TCNT2
 long timer2GetOverflowCount(void)
 {
 	// return the current timer overflow count
 	// (this is since the last timer2ClearOverflowCount() command was called)
 	return Timer2Reg0;
 }
+#endif
 
 void timer1PWMInit(uint8_t bitRes)
 {
@@ -334,6 +347,7 @@ ISR(TIMER1_OVF_vect)
 		TimerIntFunc[TIMER1OVERFLOW_INT]();
 }
 
+#ifdef TCNT2
 ISR(TIMER2_OVF_vect)
 {
 	Timer2Reg0++;		// increment low-order counter
@@ -342,6 +356,7 @@ ISR(TIMER2_OVF_vect)
 	if (TimerIntFunc[TIMER2OVERFLOW_INT])
 		TimerIntFunc[TIMER2OVERFLOW_INT]();
 }
+#endif
 
 // Interrupt handler for OutputCompare0A match (OC0A) interrupt
 ISR(TIMER0_COMPA_vect)
@@ -375,6 +390,7 @@ ISR(TIMER1_COMPB_vect)
 		TimerIntFunc[TIMER1OUTCOMPAREB_INT]();
 }
 
+#ifdef TCNT2
 // Interrupt handler for OutputCompare2A match (OC2A) interrupt
 ISR(TIMER2_COMPA_vect)
 {
@@ -382,7 +398,9 @@ ISR(TIMER2_COMPA_vect)
 	if (TimerIntFunc[TIMER2OUTCOMPAREA_INT])
 		TimerIntFunc[TIMER2OUTCOMPAREA_INT]();
 }
+#endif
 
+#ifdef TCNT2
 // Interrupt handler for OutputCompare2B match (OC2B) interrupt
 ISR(TIMER2_COMPB_vect)
 {
@@ -390,6 +408,7 @@ ISR(TIMER2_COMPB_vect)
 	if (TimerIntFunc[TIMER2OUTCOMPAREB_INT])
 		TimerIntFunc[TIMER2OUTCOMPAREB_INT]();
 }
+#endif
 
 // Interrupt handler for InputCapture1 (IC1) interrupt
 ISR(TIMER1_CAPT_vect)

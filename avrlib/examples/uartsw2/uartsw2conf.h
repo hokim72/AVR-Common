@@ -2,16 +2,16 @@
 // the AVR's hardware timers, I/O pins, and some software.
 //
 // Specially, this code uses:
-// 		-Timer 2 Output Compare A for transmit timing
-// 		-Timer 2 Output Compare B for receive timing
+// 		-Timer 0 Output Compare A for transmit timing
+// 		-Timer 0 Output Compare B for receive timing
 // 		-External Interrupt 1 for receive triggering
 //
 // The above resources cannot be used for other purposes while this software
-// UART is enabled. The overflow interrupt from Timer2 can still be used
+// UART is enabled. The overflow interrupt from Timer0 can still be used
 // for other timing, but the prescaler for this timer must not be changed.
 //
 // Serial output from this UART can be routed to any I/O pin. Serial input
-// for this UART must come from the External Interrupt 2 (INT2) I/O pin.
+// for this UART must come from the External Interrupt 1 (INT1) I/O pin.
 // These options should be configured by editing your local copy of
 // "uartsw2conf.h"
 

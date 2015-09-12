@@ -47,17 +47,17 @@ void uartswInit(void)
 
 	// setup the transmitter
 	UartswTxBusy = FALSE;
-	// disable OC2A interrupt
-	cbi(TIMSK2, OCIE2A);
-	// attach TxBit service routine to OC2A
-	timerAttach(TIMER2OUTCOMPAREA_INT, uartswTxBitService);
+	// disable OC0A interrupt
+	cbi(TIMSK0, OCIE0A);
+	// attach TxBit service routine to OC0A
+	timerAttach(TIMER0OUTCOMPAREA_INT, uartswTxBitService);
 
 	// setup the receiver
 	UartswRxBusy = FALSE;
-	// disable 0C2B interrupt
-	cbi(TIMSK2, OCIE2B);
-	// attach RxBit service routine to OC2B
-	timerAttach(TIMER2OUTCOMPAREB_INT, uartswRxBitService);
+	// disable 0C0B interrupt
+	cbi(TIMSK0, OCIE0B);
+	// attach RxBit service routine to OC0B
+	timerAttach(TIMER0OUTCOMPAREB_INT, uartswRxBitService);
 	// INT1 trigger on rising/falling edge
 	#ifdef UARTSW_INVERT
 	sbi(EICRA, ISC11);
@@ -84,12 +84,12 @@ void uartswInitBuffers(void)
 void uartswOff(void)
 {
 	// disable interrupts
-	cbi(TIMSK2, OCIE2A);
-	cbi(TIMSK2, OCIE2B);
+	cbi(TIMSK0, OCIE0A);
+	cbi(TIMSK0, OCIE0B);
 	cbi(EIMSK, INT1);
 	// detach the service routines
-	timerDetach(TIMER2OUTCOMPAREA_INT);
-	timerDetach(TIMER2OUTCOMPAREB_INT);
+	timerDetach(TIMER0OUTCOMPAREA_INT);
+	timerDetach(TIMER0OUTCOMPAREB_INT);
 }
 
 void uartswSetBaudRate(uint32_t baudrate)
@@ -101,14 +101,14 @@ void uartswSetBaudRate(uint32_t baudrate)
 	{
 		// if the requested baud rate is high,
 		// set timer prescalers to div-by-64
-		timer2SetPrescaler(TIMER_CLK_DIV64);
+		timer0SetPrescaler(TIMER_CLK_DIV64);
 		div = 64;
 	}
 	else
 	{
 		// if the requested baud rate is low,
 		// set timer prescalers to div-by-256
-		timer2SetPrescaler(TIMER_CLK_DIV256);
+		timer0SetPrescaler(TIMER_CLK_DIV256);
 		div = 256;
 	}
 
@@ -143,9 +143,9 @@ void uartswSendByte(uint8_t data)
 	cbi(UARTSW_TX_PORT, UARTSW_TX_PIN);
 	#endif
 	// schedule the next bit
-	outb(OCR2A, inb(TCNT2) + UartswBaudRateDiv);
-	// enable OC2A interrupt
-	sbi(TIMSK2, OCIE2A);
+	outb(OCR0A, inb(TCNT0) + UartswBaudRateDiv);
+	// enable OC0A interrupt
+	sbi(TIMSK0, OCIE0A);
 }
 
 // gets a single byte from the uart receive buffer (getchar-style)
@@ -213,7 +213,7 @@ void uartswTxBitService(void)
 			#endif
 		}
 		// schedule the next bit
-		outb(OCR2A, inb(OCR2A) + UartswBaudRateDiv);
+		outb(OCR0A, inb(OCR0A) + UartswBaudRateDiv);
 		// count down
 		UartswTxBitNum--;
 	}
@@ -222,8 +222,8 @@ void uartswTxBitService(void)
 		// transmission is done
 		// clear busy flag
 		UartswTxBusy = FALSE;
-		// disable OC2A interrupt
-		//cbi(TIMSK2, OCIE2A);  <-- must comment out!!! 
+		// disable OC0A interrupt
+		//cbi(TIMSK0, OCIE0A);  <-- must comment out!!! 
 	}
 }
 
@@ -240,11 +240,11 @@ void uartswRxBitService(void)
 		// disable INT1 interrupt
 		cbi(EIMSK, INT1);
 		// schedule data bit sampling 1.5 bit periods from now
-		outb(OCR2B, inb(TCNT2) + UartswBaudRateDiv + UartswBaudRateDiv/2);
-		// clear OC2B interrupt flag
-		sbi(TIFR2, OCF2B);
-		// enable OC2B interrupt
-		sbi(TIMSK2, OCIE2B);
+		outb(OCR0B, inb(TCNT0) + UartswBaudRateDiv + UartswBaudRateDiv/2);
+		// clear OC0B interrupt flag
+		sbi(TIFR0, OCF0B);
+		// enable OC0B interrupt
+		sbi(TIMSK0, OCIE0B);
 		// set busy flag
 		UartswRxBusy = TRUE;
 		// reset bit counter
@@ -275,15 +275,15 @@ void uartswRxBitService(void)
 		// increment bit counter
 		UartswRxBitNum++;
 		// schedule next bit sample
-		outb(OCR2B, inb(OCR2B) + UartswBaudRateDiv);
+		outb(OCR0B, inb(OCR0B) + UartswBaudRateDiv);
 
 		// check if we have a full byte
 		if (UartswRxBitNum >= 8)
 		{
 			// save data in receive buffer
 			bufferAddToEnd(&uartswRxBuffer, UartswRxData);
-			// disable 0C2B interrupt
-			cbi(TIMSK2, OCIE2B);
+			// disable 0C0B interrupt
+			cbi(TIMSK0, OCIE0B);
 			// clear INT1 interrupt flag
 			sbi(EIFR, INTF1);
 			// enable INT1 interrupt
