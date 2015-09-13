@@ -24,7 +24,7 @@ void a2dInit(void)
 	//sbi(ADCSRA, ADIE);				// enable ADC interrupts
 
 	//a2dCompleteFlag = FALSE;		// clear conversion complete flag
-	sei();							// turn on interrupts (if not already on)
+	//sei();							// turn on interrupts (if not already on)
 }
 
 // turn off a2d converter
