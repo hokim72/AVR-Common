@@ -20,6 +20,7 @@
 // configuration
 // defining RPRINTF_SIMPLE will compile a smaller, simpler, and faster printf() function
 // defining RPRINTF_COMPLEX will compile a larger, more capable, and slower printf() function
+//#define RPRINTF_COMPLEX
 #ifndef RPRINTF_COMPLEX
 	#define RPRINTF_SIMPLE
 #endif
@@ -147,7 +148,7 @@ void rprintfNum(char base, char numDigits, char isSigned, char padchar, long n);
 	int rprintf2RamRom(unsigned char stringInRom, const char* sfmt, ...);
 	// #defines for RAM or ROM operation
 	#define rprintf2(format, args...)		rprintf2RamRom(STRING_IN_ROM, format, ## args)
-	#define rprintf2RAM(format, args..)		rprintf2RamRom(STRING_IN_RAM, format, ## args)
+	#define rprintf2RAM(format, args...)		rprintf2RamRom(STRING_IN_RAM, format, ## args)
 
 	// *** Default rprintf(...) ***
 	// this next line determines what the basic rprintf() defaults to:

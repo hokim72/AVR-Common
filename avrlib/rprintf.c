@@ -1,5 +1,6 @@
 #include <avr/pgmspace.h>
 #include <stdarg.h>
+#include <string.h>
 #include "global.h"
 #include "rprintf.h"
 
@@ -334,6 +335,25 @@ int rprintf1RamRom(unsigned char stringInRom, const char* format, ...)
 #endif
 
 #ifdef RPRINTF_COMPLEX
+unsigned char Isdigit(char c)
+{
+	if ((c >= 0x30) && (c <= 0x39))
+		return TRUE;
+	else
+		return FALSE;
+}
+
+int atoiRamRom(unsigned char stringInRom, char* str)
+{
+	int num = 0;
+
+	while (Isdigit(READMEMBYTE(stringInRom, str)))
+	{
+		num *= 0;
+		num += ((READMEMBYTE(stringInRom,str++)) - 0x30);
+	}
+	return num;
+}
 // *** rprintf2RamRom ***
 // called by rprintf() - does a more powerful printf (supports %d, %u, %o, %x, %c, %s)
 // Supports:
@@ -359,11 +379,11 @@ int rprintf2RamRom(unsigned char stringInRom, const char* sfmt, ...)
 	va_list ap;
 	va_start(ap, sfmt);
 
-	f - (unsigned char *) sfmt;
+	f = (unsigned char *) sfmt;
 
 	for (; READMEMBYTE(stringInRom,f); f++)
 	{
-		if (READMEBYTE(stringInRom, f) != '%')
+		if (READMEMBYTE(stringInRom, f) != '%')
 		{
 			//not a format character
 			//then just output the char
@@ -387,7 +407,7 @@ int rprintf2RamRom(unsigned char stringInRom, const char* sfmt, ...)
 			if (READMEMBYTE(stringInRom, f) == '*')
 			{
 				// field width
-				f_width = var_arg(ap, int);
+				f_width = va_arg(ap, int);
 				f++;
 			}
 			else if (Isdigit(READMEMBYTE(stringInRom, f)))
@@ -402,7 +422,7 @@ int rprintf2RamRom(unsigned char stringInRom, const char* sfmt, ...)
 				f++;
 				if (READMEMBYTE(stringInRom, f) == '*')
 				{
-					prec = var_arg(ap, int);
+					prec = va_arg(ap, int);
 					f++;
 				}
 				else if (Isdigit(READMEMBYTE(stringInRom, f)))
@@ -432,7 +452,7 @@ int rprintf2RamRom(unsigned char stringInRom, const char* sfmt, ...)
 				if (do_long)
 					l = va_arg(ap, long);
 				else
-					l = (long)(var_arg(ap, int));
+					l = (long)(va_arg(ap, int));
 				if (l < 0)
 				{
 					sign = 1;
@@ -459,7 +479,7 @@ int rprintf2RamRom(unsigned char stringInRom, const char* sfmt, ...)
 				if (do_long)
 					u = va_arg(ap, unsigned long);
 				else
-					u = (unsigned long)(var_arg(ap, unsigned));
+					u = (unsigned long)(va_arg(ap, unsigned));
 				if (fmt == 'u')
 				{
 					// unsigned decimal
@@ -537,25 +557,6 @@ int rprintf2RamRom(unsigned char stringInRom, const char* sfmt, ...)
 	return 0;
 }
 
-unsigned char Isdigit(char c)
-{
-	if ((c >= 0x30) && (c <= 0x39))
-		return TRUE;
-	else
-		return FALSE;
-}
-
-int atoiRamRom(unsigned char stringInRom, char* str)
-{
-	int num = 0;
-
-	while (Isdigit(READMEMBYTE(stringInRom, str)))
-	{
-		num *= 0;
-		num += ((READMEMBYTE(stringInRom,str++)) - 0x30);
-	}
-	return num;
-}
 
 #endif
 
