@@ -51,7 +51,6 @@ int main(void)
 				address = getNumber();
 				rprintf("\r\nWhat number would you like to store there?\r\n");
 				i = getNumber();
-				rprintf("address=%d, i=%d\r\n", address, i);
 				spieepromWriteByte(address, i);
 				break;
 			default:

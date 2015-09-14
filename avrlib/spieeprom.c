@@ -8,19 +8,24 @@ void spieepromInit(void)
 {
 	// initialize SPI interface
 	spiInit();
+	sbi(SPIEEPROM_SS_DDR, SPIEEPROM_SS);
+	sbi(SPIEEPROM_SS_PORT, SPIEEPROM_SS);
+
+	// enable SPI
+	sbi(SPCR, SPE);
 }
 
 uint8_t spieepromReadByte(uint16_t memAddr)
 {
 	uint8_t data;
-	selectSlave();
+	selectEEPROM();
 	// send command
 	spiTransferByte(SPIEEPROM_CMD_READ);
 	// send address
 	spieepromSend16BitAddress(memAddr);
 	// read contents of memory address
 	data  = spiTransferByte(0xFF);
-	unselectSlave();
+	unselectEEPROM();
 	// return data
 	return data;
 }
@@ -29,42 +34,42 @@ void spieepromWriteByte(uint16_t memAddr, uint8_t data)
 {
 
 	spieepromWriteEnable();
-	selectSlave();
+	selectEEPROM();
 	// send command
 	spiTransferByte(SPIEEPROM_CMD_WRITE);
 	// send address
 	spieepromSend16BitAddress(memAddr);
 	// send data to be written
 	spiTransferByte(data);
-	unselectSlave();
+	unselectEEPROM();
 	// wait for write to complete
 	while (spieepromReadStatus() & BV(SPIEEPROM_STATUS_WIP));
 }
 
 void spieepromWriteEnable(void)
 {
-	selectSlave();
+	selectEEPROM();
 	// send command
 	spiTransferByte(SPIEEPROM_CMD_WREN);
-	unselectSlave();
+	unselectEEPROM();
 }
 
 void spieepromWriteDisable(void)
 {
-	selectSlave();
+	selectEEPROM();
 	// send command
 	spiTransferByte(SPIEEPROM_CMD_WRDI);
-	unselectSlave();
+	unselectEEPROM();
 }
 
 uint8_t spieepromReadStatus(void)
 {
 	uint8_t status;
-	selectSlave();
+	selectEEPROM();
 	spiTransferByte(SPIEEPROM_CMD_RDSR);
 	// get status register value
 	status = spiTransferByte(0xFF);
-	unselectSlave();
+	unselectEEPROM();
 	return status;
 }
 
@@ -77,7 +82,7 @@ void spieepromSend16BitAddress(uint16_t memAddr)
 uint16_t spieepromReadWord(uint16_t memAddr)
 {
 	uint16_t data;
-	selectSlave();
+	selectEEPROM();
 	// send command
 	spiTransferByte(SPIEEPROM_CMD_READ);
 	// send address
@@ -85,14 +90,14 @@ uint16_t spieepromReadWord(uint16_t memAddr)
 	// read contents of memory address
 	data = (spiTransferByte(0xFF) << 8);
 	data |= spiTransferByte(0xFF);
-	unselectSlave();
+	unselectEEPROM();
 	return data;
 }
 
 void spieepromWriteWord(uint16_t memAddr, uint16_t data)
 {
 	spieepromWriteEnable();
-	selectSlave();
+	selectEEPROM();
 	// send command
 	spiTransferByte(SPIEEPROM_CMD_WRITE);
 	// send address
@@ -100,7 +105,7 @@ void spieepromWriteWord(uint16_t memAddr, uint16_t data)
 	// send data to be written
 	spiTransferByte((uint8_t)(data>>8));
 	spiTransferByte((uint8_t)data);
-	unselectSlave();
+	unselectEEPROM();
 	// wait for write to complete
 	while (spieepromReadStatus() & BV(SPIEEPROM_STATUS_WIP));
 }
@@ -111,13 +116,13 @@ void spieepromClearAll(void)
 	uint16_t pageAddress = 0;
 	while (pageAddress < SPIEEPROM_BYTES_MAX)  {
 		spieepromWriteEnable();
-		selectSlave();
+		selectEEPROM();
 		spiTransferByte(SPIEEPROM_CMD_WRITE);
 		spieepromSend16BitAddress(pageAddress);
 		for (i=0; i<SPIEEPROM_BYTES_PER_PAGE; i++) {
 			spiTransferByte(0);
 		}
-		unselectSlave();
+		unselectEEPROM();
 		pageAddress += SPIEEPROM_BYTES_PER_PAGE;
 		while (spieepromReadStatus() & BV(SPIEEPROM_STATUS_WIP));
 	}

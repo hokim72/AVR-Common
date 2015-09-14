@@ -28,8 +28,8 @@ void spiInit()
 {
 // setup SPI I/O pins
 	sbi(SPI_PSS_PORT, SPI_PSS);
-	sbi(SPI_SS_DDR, SPI_SS);
-	sbi(SPI_SS_PORT, SPI_SS);
+	//sbi(SPI_SS_DDR, SPI_SS);
+	//sbi(SPI_SS_PORT, SPI_SS);
 	sbi(SPI_MOSI_DDR, SPI_MOSI);
 	sbi(SPI_MISO_PORT, SPI_MISO);
 	sbi(SPI_SCK_DDR, SPI_SCK);
@@ -44,9 +44,6 @@ void spiInit()
 	cbi(SPCR, CPOL);
 	// Data order MSB first
 	cbi(SPCR, DORD);
-	// enable SPI
-	sbi(SPCR, SPE);
-
 
 	#ifdef SPI_USEINT
 	// clear status
@@ -55,6 +52,9 @@ void spiInit()
 	// enable SPI interrupt
 	sbi(SPCR, SPIE);
 	#endif
+	
+	// enable SPI
+	//sbi(SPCR, SPE);
 }
 
 void spiSendByte(uint8_t data)

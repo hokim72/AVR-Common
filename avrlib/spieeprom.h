@@ -6,6 +6,7 @@
 #define SPIEEPROM_H
 
 #include "global.h"
+#include "spieepromconf.h"
 
 // defines and constants
 // commands
