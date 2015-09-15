@@ -8,8 +8,8 @@ void spieepromInit(void)
 {
 	// initialize SPI interface
 	spiInit();
-	sbi(SPIEEPROM_SS_DDR, SPIEEPROM_SS);
-	sbi(SPIEEPROM_SS_PORT, SPIEEPROM_SS);
+	sbi(SPIEEPROM_CS_DDR, SPIEEPROM_CS_PIN);
+	sbi(SPIEEPROM_CS_PORT, SPIEEPROM_CS_PIN);
 
 	// enable SPI
 	sbi(SPCR, SPE);

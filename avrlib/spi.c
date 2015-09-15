@@ -27,21 +27,23 @@ ISR(SPI_STC_vect)
 void spiInit()
 {
 // setup SPI I/O pins
-	sbi(SPI_PSS_PORT, SPI_PSS);
-	//sbi(SPI_SS_DDR, SPI_SS);
-	//sbi(SPI_SS_PORT, SPI_SS);
-	sbi(SPI_MOSI_DDR, SPI_MOSI);
-	sbi(SPI_MISO_PORT, SPI_MISO);
-	sbi(SPI_SCK_DDR, SPI_SCK);
+	//sbi(SPI_SS_PORT, SPI_SS_PIN); // physical ss should be held high when input
+	sbi(SPI_SS_DDR, SPI_SS_PIN);    // or it should be output  
+	//sbi(SPI_CS_DDR, SPI_CS_PIN);
+	//sbi(SPI_CS_PORT, SPI_CS_PIN);
+	sbi(SPI_MOSI_DDR, SPI_MOSI_PIN);
+	sbi(SPI_MISO_PORT, SPI_MISO_PIN);
+	sbi(SPI_SCK_DDR, SPI_SCK_PIN);
 
 	// setup SPI interface :
 	// master mode
 	sbi(SPCR, MSTR);
-	// clock = f/64
-	cbi(SPCR, SPR0);
+	// clock = f/128
+	sbi(SPCR, SPR0);
 	sbi(SPCR, SPR1);
 	// select clock phase positive-going in middle of data
 	cbi(SPCR, CPOL);
+	cbi(SPCR, CPHA);
 	// Data order MSB first
 	cbi(SPCR, DORD);
 
