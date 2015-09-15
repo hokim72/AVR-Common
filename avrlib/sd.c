@@ -304,7 +304,7 @@ uint8_t sdWriteMultipleBlock(uint32_t startSector, uint32_t totalSectors, uint8_
 	}
 	
 	// use address if not SDHC card
-	res = sdSendCommand(WRITE_MULTIPLE_BLOCKS, sdCardType !=  SD_CARD_TYPE_SDHC ? startSector<<9 : startSector); // write a Block command
+	res = sdSendCommand(WRITE_MULTIPLE_BLOCKS, startSector); // write a Block command
 	if (res != R1_READY_STATE) {
 		goto fail_res; // check for SD status: 0x00 - OK (No flags set)
 	}
@@ -446,7 +446,8 @@ uint8_t sdSendCommand(uint8_t cmd, uint32_t arg)
 			cmd == READ_MULTIPLE_BLOCKS  ||
 			cmd == WRITE_SINGLE_BLOCK    ||
 			cmd == WRITE_MULTIPLE_BLOCKS ||
-			cmd == ERASE_BLOCK_START_ADDR||
+			cmd == SET_WR_BLK_ERASE_COUNT ||
+	 		cmd == ERASE_BLOCK_START_ADDR||
 			cmd == ERASE_BLOCK_END_ADDR ) arg <<= 9;
 	}
 

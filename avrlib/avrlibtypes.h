@@ -25,6 +25,7 @@
 #define MIN_S32 -2147483648
 #define MAX_S32 2147483647
 
+#if 0
 #ifndef WIN32
     // more type redefinitions
     typedef unsigned char   BOOL;
@@ -40,6 +41,7 @@
     typedef char            CHAR;
     typedef int             INT;
     typedef long            LONG;
+#endif
 #endif
 
 #endif
