@@ -29,6 +29,7 @@ void spiInit()
 // setup SPI I/O pins
 	//sbi(SPI_SS_PORT, SPI_SS_PIN); // physical ss should be held high when input
 	sbi(SPI_SS_DDR, SPI_SS_PIN);    // or it should be output  
+	sbi(SPI_SS_PORT, SPI_SS_PIN);
 	//sbi(SPI_CS_DDR, SPI_CS_PIN);
 	//sbi(SPI_CS_PORT, SPI_CS_PIN);
 	sbi(SPI_MOSI_DDR, SPI_MOSI_PIN);
@@ -39,13 +40,8 @@ void spiInit()
 	// master mode
 	sbi(SPCR, MSTR);
 	// clock = f/128
-	sbi(SPCR, SPR0);
-	sbi(SPCR, SPR1);
-	// select clock phase positive-going in middle of data
-	cbi(SPCR, CPOL);
-	cbi(SPCR, CPHA);
-	// Data order MSB first
-	cbi(SPCR, DORD);
+	//sbi(SPCR, SPR0);
+	//sbi(SPCR, SPR1);
 
 	#ifdef SPI_USEINT
 	// clear status
@@ -55,8 +51,6 @@ void spiInit()
 	sbi(SPCR, SPIE);
 	#endif
 	
-	// enable SPI
-	//sbi(SPCR, SPE);
 }
 
 void spiSendByte(uint8_t data)
@@ -72,7 +66,8 @@ void spiSendByte(uint8_t data)
 		while (!spiTransferComplete);
 	#else
 		// wait for transfer to complete
-		while (!(inb(SPSR) & (1<<SPIF)));
+		// while (!(inb(SPSR) & (1<<SPIF)));
+		loop_until_bit_is_set(SPSR, SPIF);
 	#endif
 }
 
@@ -93,4 +88,22 @@ uint16_t spiTransferWord(uint16_t data)
 
 	// return the received data
 	return rxData;
+}
+
+// p: Data block to sent; cnt: Size of data block (must be multiple of 2)
+void spiSendMulti(uint8_t* p, uint32_t cnt)
+{
+	do {
+		SPDR = *p++; loop_until_bit_is_set(SPSR, SPIF);
+		SPDR = *p++; loop_until_bit_is_set(SPSR, SPIF);
+	} while (cnt -= 2);
+}
+
+// p: Data buffer; Size of data block (must be multiple of 2)
+void spiReceiveMulti(uint8_t* p, uint32_t cnt)
+{
+	do {
+		SPDR = 0xFF; loop_until_bit_is_set(SPSR, SPIF); *p++ = SPDR;
+		SPDR = 0xFF; loop_until_bit_is_set(SPSR, SPIF); *p++ = SPDR;
+	} while (cnt -= 2);
 }

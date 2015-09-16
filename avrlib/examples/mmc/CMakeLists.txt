@@ -8,7 +8,7 @@ set(C_STANDARD gnu99)
 set(PROG_TYPE arduino)
 set(PROG_ARGS -P /dev/ttyUSB0 -b 115200)
 
-set(TARGET sdtest)
+set(TARGET mmctest)
 
 set(CPP_FLAGS "-DF_CPU=${F_CPU} -mmcu=${MCU} -DRPRINTF_COMPLEX")
 set(C_FLAGS "-O${OPTIMIZATION} -g -std=${C_STANDARD} -Wall -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections")
@@ -21,8 +21,9 @@ set(AVRLIB_SRCS
 	${AVRLIB}/uart.c
 	${AVRLIB}/rprintf.c
 	${AVRLIB}/debug.c
+	${AVRLIB}/timer.c
 	${AVRLIB}/spi.c
-	${AVRLIB}/sd.c
+	${AVRLIB}/mmc.c
 )
 
 set(SRCS ${TARGET}.c ${AVRLIB_SRCS})

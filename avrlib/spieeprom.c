@@ -11,6 +11,10 @@ void spieepromInit(void)
 	sbi(SPIEEPROM_CS_DDR, SPIEEPROM_CS_PIN);
 	sbi(SPIEEPROM_CS_PORT, SPIEEPROM_CS_PIN);
 
+	// clock = f/128
+	sbi(SPCR, SPR0);
+	sbi(SPCR, SPR1);
+
 	// enable SPI
 	sbi(SPCR, SPE);
 }
