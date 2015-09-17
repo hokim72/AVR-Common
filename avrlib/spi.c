@@ -91,7 +91,7 @@ uint16_t spiTransferWord(uint16_t data)
 }
 
 // p: Data block to sent; cnt: Size of data block (must be multiple of 2)
-void spiSendMulti(uint8_t* p, uint32_t cnt)
+void spiSendMulti(const uint8_t* p, uint32_t cnt)
 {
 	do {
 		SPDR = *p++; loop_until_bit_is_set(SPSR, SPIF);

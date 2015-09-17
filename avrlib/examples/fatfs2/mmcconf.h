@@ -2,7 +2,7 @@
 #define MMCCONF_H
 
 // define to enable debugging print statements
-#define MMC_DEBUG
+//#define MMC_DEBUG
 
 #define MMC_CS_PORT		PORTD
 #define	MMC_CS_DDR		DDRD

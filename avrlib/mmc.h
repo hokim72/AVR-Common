@@ -56,10 +56,17 @@
 #define	APP_CMD					55			// CMD55
 #define READ_OCR				58			// CMD58
 
+
+extern uint8_t cardType;
 // functions
+
+int receiveDataBlock(uint8_t* buf, uint32_t btr);
+int sendDataBlock(const uint8_t* buf, uint8_t token);
 
 void mmcDeselect(void);
 int mmcSelect(void);
+
+uint8_t mmcSendCommand(uint8_t cmd, uint32_t arg);
 
 // Initialize AVR<->MMC hardware interface
 // Prepares hardware for MMC access.
@@ -73,7 +80,7 @@ uint8_t mmcReset(void);
 uint8_t mmcRead(uint8_t* buf, uint32_t sector, uint32_t count);
 
 // Write Sector(s)
-uint8_t mmcWrite(uint8_t* buf, uint32_t sector, uint32_t count);
+uint8_t mmcWrite(const uint8_t* buf, uint32_t sector, uint32_t count);
 
 
 #endif

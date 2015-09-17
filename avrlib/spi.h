@@ -32,7 +32,7 @@ uint8_t spiTransferByte(uint8_t data);
 uint16_t spinTransferWord(uint16_t data);
 
 // Send a data block fast
-void spiSendMulti(uint8_t* p, uint32_t cnt);
+void spiSendMulti(const uint8_t* p, uint32_t cnt);
 
 // Receive a data block fast
 void spiReceiveMulti(uint8_t* p, uint32_t cnt);

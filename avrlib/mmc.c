@@ -16,7 +16,7 @@
 
 static volatile uint16_t tick100Hz;
 static volatile uint8_t timer1, timer2; // 100Hz decrement timer
-static uint8_t cardType;
+uint8_t cardType;
 
 // functions
 
@@ -64,50 +64,10 @@ static int waitReady(  //1:Ready, 0:Timeout,
 	return (d == 0xFF) ? 1 : 0;
 }
 
-// Returns R1 resp (bit7==1:Send failed) 
-// cmd: Command index; arg: Argument
-static uint8_t sendCommand(uint8_t cmd, uint32_t arg)
-{
-	uint8_t n, res;
-
-	if (cmd & 0x80) { // ACMD<n> is the command sequences of CMD55-CMD<n>
-		cmd &= 0x7F;
-		res = sendCommand(APP_CMD, 0);
-		if (res > 1) return res;
-	}
-
-	// Select the card and wait for ready except to stop multiple block read
-	//if (cmd != STOP_TRANSMISSION){
-	if (cmd != STOP_TRANSMISSION && cmd != GO_IDLE_STATE){
-		mmcDeselect();
-		if (!mmcSelect()) return 0xFF;
-	}
-
-
-	// Send command packet
-	spiTransferByte(0x40 | cmd);		// Start + Command index 
-	spiTransferByte((uint8_t)(arg>>24));// Argument[31..24]
-	spiTransferByte((uint8_t)(arg>>16));// Argument[23..16]
-	spiTransferByte((uint8_t)(arg>>8)); // Argument[15..8]
-	spiTransferByte((uint8_t)arg);		// Argument[7..0]
-	n = 0x01;						// Dummy CRC + Stop
-	if (cmd == GO_IDLE_STATE) n = 0x95;	// Valid CRC for CMD0(0) + Stop 
-	if (cmd == SEND_IF_COND) n = 0x87;	// Valid CRC for CMD8(0x1AA) + Stop
-	spiTransferByte(n);
-
-	// Receive command response
-	if (cmd == STOP_TRANSMISSION) spiTransferByte(0xFF);	// Skip a stuff byte when stop reading
-	n = 10;			// Wait for a valid response in timeout of 10 attempts
-	do
-		res = spiTransferByte(0xFF);
-	while ((res & 0x80) && --n);
-
-	return res; // Return with the response value
-}
 
 // buf: Data buffer to store received data
 // btr: Byte count (must be multiple of 4)
-static int receiveDataBlock(uint8_t* buf, uint32_t btr)
+int receiveDataBlock(uint8_t* buf, uint32_t btr)
 {
 	uint8_t token;
 
@@ -125,7 +85,7 @@ static int receiveDataBlock(uint8_t* buf, uint32_t btr)
 
 // buf: 512 byte data block to be transmitted
 // token: Data/Stop Token
-static int sendDataBlock(uint8_t* buf, uint8_t token)
+int sendDataBlock(const uint8_t* buf, uint8_t token)
 {
 	uint8_t resp;
 
@@ -162,6 +122,47 @@ int mmcSelect(void) // 1: Successful, 0: Timeout
 	return 0; // Timeout
 }
 
+// Returns R1 resp (bit7==1:Send failed) 
+// cmd: Command index; arg: Argument
+uint8_t mmcSendCommand(uint8_t cmd, uint32_t arg)
+{
+	uint8_t n, res;
+
+	if (cmd & 0x80) { // ACMD<n> is the command sequences of CMD55-CMD<n>
+		cmd &= 0x7F;
+		res = mmcSendCommand(APP_CMD, 0);
+		if (res > 1) return res;
+	}
+
+	// Select the card and wait for ready except to stop multiple block read
+	//if (cmd != STOP_TRANSMISSION){
+	if (cmd != STOP_TRANSMISSION && cmd != GO_IDLE_STATE){
+		mmcDeselect();
+		if (!mmcSelect()) return 0xFF;
+	}
+
+
+	// Send command packet
+	spiTransferByte(0x40 | cmd);		// Start + Command index 
+	spiTransferByte((uint8_t)(arg>>24));// Argument[31..24]
+	spiTransferByte((uint8_t)(arg>>16));// Argument[23..16]
+	spiTransferByte((uint8_t)(arg>>8)); // Argument[15..8]
+	spiTransferByte((uint8_t)arg);		// Argument[7..0]
+	n = 0x01;						// Dummy CRC + Stop
+	if (cmd == GO_IDLE_STATE) n = 0x95;	// Valid CRC for CMD0(0) + Stop 
+	if (cmd == SEND_IF_COND) n = 0x87;	// Valid CRC for CMD8(0x1AA) + Stop
+	spiTransferByte(n);
+
+	// Receive command response
+	if (cmd == STOP_TRANSMISSION) spiTransferByte(0xFF);	// Skip a stuff byte when stop reading
+	n = 10;			// Wait for a valid response in timeout of 10 attempts
+	do
+		res = spiTransferByte(0xFF);
+	while ((res & 0x80) && --n);
+
+	return res; // Return with the response value
+}
+
 void mmcInit(void)
 {
 	// initialize SPI interface
@@ -192,8 +193,10 @@ uint8_t mmcReset(void)
 {
 	uint8_t n, cmd, ty, ocr[4];
 
+	mmcDeselect();
+
 	for (n=0; n<10; n++)
-		sendCommand( GO_IDLE_STATE, 0); // important!!! 
+		mmcSendCommand( GO_IDLE_STATE, 0); // important!!! 
 										// make MMC send 0xFF packets
 
 	for (n=0; n<10; n++) { // 80 dummy clocks
@@ -206,25 +209,25 @@ uint8_t mmcReset(void)
 	fclkSlow();
 
 	ty = 0;
-	if (sendCommand( GO_IDLE_STATE, 0) == 1) {	// Enter Idle state
+	if (mmcSendCommand( GO_IDLE_STATE, 0) == 1) {	// Enter Idle state
 		timer1 = 100;							// Initialization timeout of 1000 ms
-		if (sendCommand(SEND_IF_COND, 0x1AA) == 1) { // SDv2?
+		if (mmcSendCommand(SEND_IF_COND, 0x1AA) == 1) { // SDv2?
 			for (n=0; n<4; n++) ocr[n] = spiTransferByte(0xFF);	// Get trailing return value of R7 resp
 			if (ocr[2] == 0x01 && ocr[3] == 0xAA) {	// The card can work at vdd range of 2.7 - 3.6V
-				while (timer1 && sendCommand(SEND_OP_COND_SDC, 1UL << 30)); // Wait for leaving idle state (ACMD41 with HCS bit)
-				if (timer1 && sendCommand(READ_OCR, 0) == 0) { // Check CCS bit in the OCR
+				while (timer1 && mmcSendCommand(SEND_OP_COND_SDC, 1UL << 30)); // Wait for leaving idle state (ACMD41 with HCS bit)
+				if (timer1 && mmcSendCommand(READ_OCR, 0) == 0) { // Check CCS bit in the OCR
 					for (n=0; n<4; n++) ocr[n] = spiTransferByte(0xFF);
 					ty = (ocr[0] & 0x40) ? CT_SD2 | CT_BLOCK : CT_SD2; // SDv2
 				}
 			}
 		} else {	// SDv1 or MMCv3
-			if (sendCommand(SEND_OP_COND_SDC, 0) <= 1) {
+			if (mmcSendCommand(SEND_OP_COND_SDC, 0) <= 1) {
 				ty = CT_SD1; cmd = SEND_OP_COND_SDC; // SDv1
 			} else {
 				ty = CT_MMC; cmd = SEND_OP_COND_MMC; // MMCv3
 			}
-			while (timer1 && sendCommand(cmd, 0));	// Wait for leaving idle state
-			if (!timer1 || sendCommand(SET_BLOCK_LEN, 512) != 0) // Set R/W block length to 512
+			while (timer1 && mmcSendCommand(cmd, 0));	// Wait for leaving idle state
+			if (!timer1 || mmcSendCommand(SET_BLOCK_LEN, 512) != 0) // Set R/W block length to 512
 				ty = 0;
 		}
 	}
@@ -253,12 +256,12 @@ uint8_t mmcRead(uint8_t* buf, uint32_t sector, uint32_t count)
 	if (!(cardType & CT_BLOCK)) sector *= 512; // Convert to address if needed
 	
 	cmd = count > 1 ? READ_MULTIPLE_BLOCK : READ_SINGLE_BLOCK; // CMD18:CMD17
-	if (sendCommand(cmd, sector) == 0) {
+	if (mmcSendCommand(cmd, sector) == 0) {
 		do {
 			if (!receiveDataBlock(buf, 512)) break;
 			buf += 512;
 		} while (--count);
-		if (cmd == READ_MULTIPLE_BLOCK) sendCommand(STOP_TRANSMISSION, 0); //CMD12
+		if (cmd == READ_MULTIPLE_BLOCK) mmcSendCommand(STOP_TRANSMISSION, 0); //CMD12
 	}
 	mmcDeselect();
 
@@ -272,18 +275,18 @@ uint8_t mmcRead(uint8_t* buf, uint32_t sector, uint32_t count)
 // buf: Pointer to the data to be written
 // sector: Start sector number (LBA)
 // count: Sector count (1..128)
-uint8_t mmcWrite(uint8_t* buf, uint32_t sector, uint32_t count)
+uint8_t mmcWrite(const uint8_t* buf, uint32_t sector, uint32_t count)
 {
 	if (!(cardType & CT_BLOCK)) sector *= 512; // Convert to byte address if needed
 
 	if (count == 1) {// Single block write
-		if ((sendCommand(WRITE_BLOCK, sector) == 0) // CMD24
+		if ((mmcSendCommand(WRITE_BLOCK, sector) == 0) // CMD24
 			&& sendDataBlock(buf, 0xFE))
 			count = 0;
 	}
 	else { // Multiple block write
-		if (cardType & CT_SDC) sendCommand(SET_WR_BLK_ERASE_COUNT_SDC, count);
-		if (sendCommand(WRITE_MULTIPLE_BLOCK, sector) == 0) { // CMD25
+		if (cardType & CT_SDC) mmcSendCommand(SET_WR_BLK_ERASE_COUNT_SDC, count);
+		if (mmcSendCommand(WRITE_MULTIPLE_BLOCK, sector) == 0) { // CMD25
 			do {
 				if (!sendDataBlock(buf, 0xFC)) break;
 				buf += 512;
