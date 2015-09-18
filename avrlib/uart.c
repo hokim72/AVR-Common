@@ -54,9 +54,9 @@ void uartInit(void)
 void uartInitBuffers(void)
 {
 	// initialize the UART receive buffer
-	bufferInit(&uartTxBuffer, uartRxData, UART_RX_BUFFER_SIZE);
+	bufferInit(&uartRxBuffer, uartRxData, UART_RX_BUFFER_SIZE);
 	// initialize the UART transmit buffer
-	bufferInit(&uartRxBuffer, uartTxData, UART_TX_BUFFER_SIZE);
+	bufferInit(&uartTxBuffer, uartTxData, UART_TX_BUFFER_SIZE);
 }
 
 // redirects received data to a user function

@@ -32,6 +32,7 @@
 
 #include "global.h"
 #include "buffer.h"
+#include "uartconf.h"
 #include <avr/io.h>
 
 // Default uart baud rate.

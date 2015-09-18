@@ -6,7 +6,7 @@
 //#define I2C_DEBUG
 #ifdef I2C_DEBUG
 #include "rprintf.h"
-#include "uart2.h"
+#include "uart.h"
 #endif
 
 // Standard I2C bit rate are:
@@ -93,7 +93,7 @@ inline void i2cSendStop(void)
 {
 	// transmit stop condition
 	// leave with TWEA on for salve receiving
-	outb(TWCR, (inb(TWCR)&TWCR_CMD_MASK)|BV(TWINT)|BV(TWEA)|(TWSTO));
+	outb(TWCR, (inb(TWCR)&TWCR_CMD_MASK)|BV(TWINT)|BV(TWEA)|BV(TWSTO));
 }
 
 inline void i2cWaitForComplete(void)
@@ -210,7 +210,6 @@ uint8_t i2cMasterSendNI(uint8_t deviceAddr, uint8_t length, uint8_t* data)
 	// transmit stop condition
 	// leave with TWEA on for slave receiving
 	i2cSendStop();
-	while (!(inb(TWCR) & BV(TWSTO)));
 
 	// enable TWI interrupt
 	sbi(TWCR, TWIE);
@@ -233,6 +232,7 @@ uint8_t i2cMasterReceiveNI(uint8_t deviceAddr, uint8_t length, uint8_t *data)
 	i2cSendByte(deviceAddr | 0x01);
 	i2cWaitForComplete();
 
+	//rprintf("receive TWSR = 0x%x\n", TWSR);
 	// check if device is present and live
 	if (inb(TWSR) == TW_MR_SLA_ACK)
 	{
@@ -281,7 +281,7 @@ ISR(TWI_vect)
 	case TW_START:				// 0x08: Sent start condition	
 	case TW_REP_START:			// 0x10: Sent repeated start condition
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: M->START\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -293,7 +293,7 @@ ISR(TWI_vect)
 	case TW_MT_SLA_ACK:			// 0x18: Slave address acknowledged
 	case TW_MT_DATA_ACK:		// 0x28: Data acknowledged
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: MT->SLA_ACK or DATA_ACK\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -312,7 +312,7 @@ ISR(TWI_vect)
 		break;
 	case TW_MR_DATA_NACK:		// 0x58: Data received, NACK reply issue
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: MR->DATA_NACK\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -323,7 +323,7 @@ ISR(TWI_vect)
 	case TW_MT_SLA_NACK:		// 0x20: Slave address not acknowleged
 	case TW_MT_DATA_NACK:		// 0x30: Data not acknowledged
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: MTR->SLA_NACK or MT->DATA_NACK\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -334,7 +334,7 @@ ISR(TWI_vect)
 		break;
 	case TW_MT_ARB_LOST:		// 0x38: Bus arbitration lost
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: MT->ARB_LOST\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -345,7 +345,7 @@ ISR(TWI_vect)
 		break;
 	case TW_MR_DATA_ACK:		// 0x50: Data acknowledged
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: MR->DATA_ACK\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -354,7 +354,7 @@ ISR(TWI_vect)
 		// fall-through to see if more bytes will be received
 	case TW_MR_SLA_ACK:			// 0x40: Slave address acknowledged
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: MR->SLA_ACK\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -372,7 +372,7 @@ ISR(TWI_vect)
 	case TW_SR_GCALL_ACK:		// 0x70: GCA+W has been received, ACK has been returned
 	case TW_SR_ARB_LOST_GCALL_ACK: // 0x78: GCA+W has been received, ACK has been returned
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: SR->SLA_ACK\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -387,7 +387,7 @@ ISR(TWI_vect)
 	case TW_SR_DATA_ACK:		// 0x80: data byte has been received, ACK has been returned
 	case TW_SR_GCALL_DATA_ACK:	// 0x90: data byte has been received, ACK has been returned
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: SR->DATA_ACK\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -408,7 +408,7 @@ ISR(TWI_vect)
 	case TW_SR_DATA_NACK:		// 0x88: data byte has been received, NACK has been returned
 	case TW_SR_GCALL_DATA_NACK:	// 0x98: data byte has been received, NACK has been returned
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: SR->DATA_NACK\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -417,7 +417,7 @@ ISR(TWI_vect)
 		break;
 	case TW_SR_STOP:			// 0xA0: STOP or REPEATED START has been received while addressed as slave
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: SR->SR_STOP\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -433,7 +433,7 @@ ISR(TWI_vect)
 	case TW_ST_SLA_ACK:			// 0xA8: own SLA+R has been received, ACK has been returned
 	case TW_ST_ARB_LOST_SLA_ACK:// 0xB0: GCA+R has been received, ACK has been returned
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: ST->SLA_ACK\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -447,7 +447,7 @@ ISR(TWI_vect)
 		// fall-through to transmit first data byte
 	case TW_ST_DATA_ACK:		// 0xB8: data byte has been transmitted, ACK has been received
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: ST->DATA_ACK\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -463,7 +463,7 @@ ISR(TWI_vect)
 	case TW_ST_DATA_NACK:		// 0xC0: data byte has been transmitted, NACK has been received
 	case TW_ST_LAST_DATA:		// 0xC8:
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: ST->DATA_NACK or LAST_DATA\r\n");
 		rprintfInit(uartSendByte);
 		#endif
@@ -478,14 +478,14 @@ ISR(TWI_vect)
 	case TW_NO_INFO:			// 0xF8: No relevant state information
 		// do nothing
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: NO_INFO\r\n");
 		rprintfInit(uartSendByte);
 		#endif
 		break;
 	case TW_BUS_ERROR:			// 0x00: Bus error due to illegal start or stop condition
 		#ifdef I2C_DEBUG
-		rprintfInit(uartAddToTxBuffer);
+		rprintfInit((void (*)(unsigned char))uartAddToTxBuffer);
 		rprintf("I2C: BUS_ERROR\r\n");
 		rprintfInit(uartSendByte);
 		#endif
