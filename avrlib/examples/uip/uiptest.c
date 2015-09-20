@@ -184,11 +184,27 @@ int main(void)
 			}
 
 		}else if(timer_expired(&periodic_timer)) {
-			timer_reset(&periodic_timer);
 
+			timer_reset(&periodic_timer);
 
 			for(i = 0; i < UIP_CONNS; i++) {
 				uip_periodic(i);
+                // uip.h
+                // #define uip_udp_periodic(conn) do { uip_udp_conn = &uip_udp_conns[conn]; \
+                // uip_process(UIP_UDP_TIMER); } while (0) // UIP_UDP_TIMER : 5
+                // uip.c; uip_process
+                // if(flag == UIP_UDP_TIMER) {
+                //  if(uip_udp_conn->lport != 0) {
+                //      uip_conn = NULL;
+                //      uip_sappdata = uip_appdata = &uip_buf[UIP_LLH_LEN + UIP_IPUDPH_LEN];
+                //      uip_len = uip_slen = 0;
+                //      uip_flags = UIP_POLL;
+                //      UIP_UDP_APPCALL();
+                //      goto udp_send;
+                //  }
+                // } else {
+                //  goto drop;
+                // }
 				if(uip_len > 0) {
 					uip_arp_out();
 					network_send();
@@ -217,6 +233,12 @@ int main(void)
 #ifdef __DHCPC_H__
 void dhcpc_configured(const struct dhcpc_state *s)
 {
+	#ifdef MY_DEBUG
+	//rprintf("IP : %d.%d.%d.%d\n", uip_ipaddr1(s->ipaddr), uip_ipaddr2(s->ipaddr), uip_ipaddr3(s->ipaddr), uip_ipaddr4(s->ipaddr));
+	//rprintf("NM : %d.%d.%d.%d\n", uip_ipaddr1(s->netmask), uip_ipaddr2(s->netmask), uip_ipaddr3(s->netmask), uip_ipaddr4(s->netmask));
+	//rprintf("GW : %d.%d.%d.%d\n", uip_ipaddr1(s->default_router), uip_ipaddr2(s->default_router), uip_ipaddr3(s->default_router), uip_ipaddr4(s->default_router));
+	#endif
+
     uip_sethostaddr(s->ipaddr);
     uip_setnetmask(s->netmask);
     uip_setdraddr(s->default_router);

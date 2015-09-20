@@ -20,6 +20,7 @@ include_directories(${CMAKE_SOURCE_DIR} ${AVRLIB}
 	${AVRLIB}/nic/interfaces   
 	${AVRLIB}/nic/enc28j60   
 	${CMAKE_SOURCE_DIR}/apps/hello-world
+	#${CMAKE_SOURCE_DIR}/apps/dhcpc
 )
 set(AVRLIB_SRCS 
 	${AVRLIB}/buffer.c
@@ -37,6 +38,7 @@ set(AVRLIB_SRCS
 set(SRCS ${TARGET}.c ${AVRLIB_SRCS} 
 	clock-arch.c 
 	apps/hello-world/hello-world.c
+	#apps/dhcpc/dhcpc.c
 )
 
 add_executable(${TARGET}.elf ${SRCS})

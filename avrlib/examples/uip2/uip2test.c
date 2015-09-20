@@ -116,6 +116,12 @@ int main(void)
 #ifdef __DHCPC_H__
 void dhcpc_configured(const struct dhcpc_state *s)
 {
+    #ifdef MY_DEBUG
+    //rprintf("IP : %d.%d.%d.%d\n", uip_ipaddr1(s->ipaddr), uip_ipaddr2(s->ipaddr), uip_ipaddr3(s->ipaddr), uip_ipaddr4(s->ipaddr));
+    //rprintf("NM : %d.%d.%d.%d\n", uip_ipaddr1(s->netmask), uip_ipaddr2(s->netmask), uip_ipaddr3(s->netmask), uip_ipaddr4(s->netmask));
+    //rprintf("GW : %d.%d.%d.%d\n", uip_ipaddr1(s->default_router), uip_ipaddr2(s->default_router), uip_ipaddr3(s->default_router), uip_ipaddr4(s->default_router));
+    #endif
+
     uip_sethostaddr(s->ipaddr);
     uip_setnetmask(s->netmask);
     uip_setdraddr(s->default_router);
