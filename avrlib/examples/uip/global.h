@@ -10,7 +10,7 @@
 // project/system dependent defines
 
 #ifndef F_CPU
-	#define	F_CPU			16000000	// 16MHz processor
+	#define	F_CPU			8000000	// 8MHz processor
 #endif
 
 #define CYCLES_PER_US	((F_CPU+500000)/1000000)	// cpu cycles per microsecond

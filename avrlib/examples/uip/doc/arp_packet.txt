@@ -1,0 +1,44 @@
+# arping request (64bytes)
+
+* Ethernet II
+00 01 02 03 04 05 => Destination MAC Address
+74 e6 e2 d7 f8 7e => Source MAC Address
+08 06 => Type: ARP(0x0806)
+* Address Resolution Protocol (request)
+00 01 => Hardware type: Ethernet (1)
+08 00 => Protocal Type: IP (0x0800) 
+06 => Hardware size: 6 
+04 => Protocol size: 4 
+00 01 => Opcode: request (1) 
+74 e6 e2 d7 f8 7e => Send MAC address 
+c0 a8 00 0a => Send IP address: 192.168.0.10
+00 01 02 03 04 05 => Target MAC address
+c0 a8 00 01 => Target IP address: 192.168.0.1
+* Ethernet II Pading
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00
+* Etherent CRC
+XX XX XX XX
+
+# arping reply (60bytes)
+
+* Ethernet II
+74 e6 e2 d7 f8 7e => Destination 
+00 01 02 03 04 05 => Source
+08 06 => Type: ARP (0x0806)
+* Address Resolution Protocol (replay)
+00 01 => Hardware type: Ethernet (1)
+08 00 => Protocol type: IP (0x0800)
+06 => Hardware size: 6
+04 => Hardware size: 4 
+00 02 => reply (2) 
+00 01 02 03 04 05 => Send MAC address
+c0 a8 00 01 =>  Send IP address: 192.168.0.1
+74 e6 e2 d7 f8 7e => Target MAC address
+c0 a8 00 0a => Target IP address: 192.168.0.1
+* Ethernet II Pading
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00
+* Etherent CRC
+XX XX XX XX
+
