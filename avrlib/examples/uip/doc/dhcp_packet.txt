@@ -1,0 +1,278 @@
+https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol
+
+# DHCP Discover - Transaction ID 0xadde1223 (295 bytes)
+* Ethernet II
+ff ff ff ff ff ff => Destination: Broadcast (ff:ff:ff:ff:ff:ff)
+		     Address: Broadcast (ff:ff:ff:ff:ff:ff)
+		     .... ..1. .... .... .... .... = LG bit: Locally administered address (this is NOT the factory default)
+		     .... ...1 .... .... .... .... = IG bit: Group address (multicast/broadcast)	
+00 01 02 03 04 05 => Source: 3com_03:04:05 (00:01:02:03:04:05)
+                     Address: 3com_03:04:05 (00:01:02:03:04:05)
+		     .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+		     .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+08 00 => Type: IP (0x0800)
+* Internet Protocol
+45 => Version: 4, Header length: 20 bytes
+00 => Differentiated Services Field: 0x00 (DSCP 0x00: Default; ECN: 0x00: Not-ECT (Not ECN-Capable Transport))
+      0000 00.. = Differentiated Services Codepoint: Default (0x00)
+      .... ..00 = Explicit Congestion Notification: Not-ECT (Not ECN-Capable Transport) (0x00)
+01 15 => Total Length: 277
+00 01 => Identification: 0x0001 (1)
+00 => Flags: 0x00
+      0... .... = Reserved bit: Not set
+      .0.. .... = Don't fragment: Not set
+      ..0. .... = More fragments: Not set
+00 => Fragment offset: 0
+40 => Time to live: 64
+11 => Protocol: UDP (17) 
+79 d8 => Header checksum: 0x79d8 [correct]
+00 00 00 00 => Source: 0.0.0.0 (0.0.0.0)
+ff ff ff ff => Destination: 255.255.255.255 (255.255.255.255)
+* User Dataram Protocol
+00 44 => Source port: bootpc (68) 
+00 43 => Destination port: bootps (67) 
+01 01 => Length: 257
+00 00 => Checksum: 0x0000 (none)
+* Bootstrap Protocol
+01 => Message type: Boot Request (1) 
+01 => Hardware type: Ethernet (0x01)
+06 => Hardware address: length: 6
+00 => Hops: 0 
+ad de 12 23 => Transaction ID: 0xadde1223 
+00 00 => Seconds elapsed: 0 
+80 00 => Bootp flags: 0x8000 (Broadcast) 
+         1... .... .... .... = Broadcast flag: Broadcast
+         .000 0000 0000 0000 = Reserved flags: 0x0000 
+00 00 00 00 => Client IP address: 0.0.0.0 (0.0.0.0) 
+00 00 00 00 => Your (client) IP address: 0.0.0.0 (0.0.0.0)
+00 00 00 00 => Next server IP address: 0.0.0.0 (0.0.0.0)
+00 00 00 00 => Relay agent IP address: 0.0.0.0 (0.0.0.0)
+00 01 02 03 04 05 => Client MAC address: 3com_03:04:05 (00:01:02:03:04:05)
+00 00 00 00 00 00 00 00 00 00 => Client hardware address padding: 00000000000000000000
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 => Server host name not given
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 => Boot file name not given 
+63 82 53 63 => Magic cookie: DHCP 
+35 01 01 => Option: (53) DHCP Message Type
+            Length: 1
+	    DHCP: Discover (1)
+37 03 01 03 06 => Option: (55) Parameter Request List
+                  Length: 3
+	          Parameter Request List Item: (1) Subnet Mask
+	          Parameter Request List Item: (3) Router
+	          Parameter Request List Item: (6) Domain Name Server
+
+ff => Option: (255) End
+      Option End: 255
+* Ethernet II CRC
+XXXX
+
+# DHCP Offer - Transaction ID 0xadde1223 (346 bytes)
+* Ethernet II
+ff ff ff ff ff ff => Destination: Broadcast (ff:ff:ff:ff:ff:ff)
+02 26 b0 9e f3 64 => Source: 02:26:b0:9e:f3:64 (02:26:b0:9e:f3:64)
+08 00 => Type: IP (0x0800)
+* Internet Protocol
+45 => Header length: 20 bytes
+00 => Differentiated Services Field: 0x00 (DSCP 0x00: Default; ECN: 0x00: Not-ECT (Not ECN-Capable Transport))
+01 48 => Total Length: 328
+46 ad => Identification: 0x46ad (18093)
+00 => Flags: 0x00 
+00 => Fragment offset: 0
+ff => Time to live: 255
+11 => Protocol: UDP (17) 
+b1 4e => Header checksum: 0xb14e [correct] 
+c0 a8 02 01 => Source: 192.168.2.1 (192.168.2.1)
+ff ff ff ff => Destination: 255.255.255.255 (255.255.255.255)
+* User Datagram Protocol 
+00 43 => Source port: bootps (67) 
+00 44 => Destination port: bootpc (68)
+01 34 => Length: 308
+ff 56 => Checksum: 0xff56 [validation disabled]
+* Bootstrap Protocol
+02 => Message type: Boot Reply (2) 
+01 => Hardware type: Ethernet (0x01) 
+06 => Hardware address length: 6 
+00 => Hops: 0
+ad de 12 23 => Transaction ID: 0xadde1223
+00 00 => Seconds elapsed: 0 
+80 00 => Bootp flags: 0x8000 (Broadcast)
+00 00 00 00 => Client IP address: 0.0.0.0 (0.0.0.0) 
+c0 a8 02 02 => Your (client) IP address: 192.168.2.2 (192.168.2.2)
+c0 a8 02 01 => Next server IP address: 192.168.2.1 (192.168.2.1)
+00 00 00 00 => Relay agent IP address: 0.0.0.0 (0.0.0.0)
+00 01 02 03 04 05 => Client MAC address: 3com_03:04:05 (00:01:02:03:04:05)
+00 00 00 00 00 00 00 00 00 00 => Client hardware address padding: 00000000000000000000
+4b 69 6d 48 79 75 6e 2d 4f 6b 75 69 2d 4d 61 63 
+42 6f 6f 6b 2d 50 72 6f 2e 6c 6f 63 61 6c 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 => Server host name: KimHyun-Okui-MacBook-Pro.local
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 => Boot file name not given  
+63 82 53 63 => Magic cookie: DHCP
+35 01 02 => Option: (53) DHCP Message Type
+            Length: 1
+            DHCP: Offer (2)  
+36 04 c0 a8 02 01 => Option: (54) DHCP Server Identifier
+                     Length: 4
+                     DHCP Server Identifier: 192.168.2.1 (192.168.2.1) 
+33 04 00 01 4e 20 => Option: (51) IP Address Lease Time
+                     Length: 4
+                     IP Address Lease Time: (85536s) 23 hours, 45 minutes, 36 seconds
+01 04 ff ff ff 00 => Option: (1) Subnet Mask
+                     Length: 4
+                     Subnet Mask: 255.255.255.0 (255.255.255.0) 
+03 04 c0 a8 02 01 => Option: (3) Router
+                     Length: 4
+                     Router: 192.168.2.1 (192.168.2.1)
+06 04 c0 a8 02 01 => Option: (6) Domain Name Server
+                     Length: 4
+		     Domain Name Server: 192.168.2.1 (192.168.2.1) 
+ff => Option: (255) End
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 => Padding
+* Ethernet II CRC
+XXXX
+
+# DHCP Request - Transaction ID 0xadde1223 (302 bytes)
+* Ethernet II
+ff ff ff ff ff ff => Destination: Broadcast (ff:ff:ff:ff:ff:ff) 
+00 01 02 03 04 05 => Source: 3com_03:04:05 (00:01:02:03:04:05)
+08 00 => Type: IP (0x0800)
+* Internet Protocol
+45 => Version: 4, Header length: 20 bytes
+00 => Differentiated Services Field: 0x00 (DSCP 0x00: Default; ECN: 0x00: Not-ECT (Not ECN-Capable Transport))
+01 1c => Total Length: 284 
+00 02 => Identification: 0x0002 (2)
+00 => Flags: 0x00 
+00 => Fragment offset: 0 
+40 => Time to live: 64 
+11 => Protocol: UDP (17) 
+79 d0 => Header checksum: 0x79d0 [correct]
+00 00 00 00 => Source: 0.0.0.0 (0.0.0.0) 
+ff ff ff ff => Destination: 255.255.255.255 (255.255.255.255)
+* User Datagram Protocol
+00 44 => Source port: bootpc (68) 
+00 43 => Destination port: bootps (67) 
+01 08 => Length: 264
+00 00 => Checksum: 0x0000 (none)
+* Bootstrap Protocol
+01 => Message type: Boot Request (1) 
+01 => Hardware type: Ethernet (0x01) 
+06 => Hardware address length: 6
+00 => Hops: 0 
+ad de 12 23 => Transaction ID: 0xadde1223
+00 00 => Seconds elapsed: 0 
+80 00 => Bootp flags: 0x8000 (Broadcast)
+00 00 00 00 => Client IP address: 0.0.0.0 (0.0.0.0)
+00 00 00 00 => Your (client) IP address: 0.0.0.0 (0.0.0.0)
+00 00 00 00 => Next server IP address: 0.0.0.0 (0.0.0.0)
+00 00 00 00 => Relay agent IP address: 0.0.0.0 (0.0.0.0)
+00 01 02 03 04 05 => Client MAC address: 3com_03:04:05 (00:01:02:03:04:05) 
+00 00 00 00 00 00 00 00 00 00 => Client hardware address padding: 00000000000000000000
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 => Server host name not given
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 => Boot file name not given
+63 82 53 63 => Magic cookie: DHCP 
+35 01 03 => Option: (53) DHCP Message Type
+            Length: 1
+            DHCP: Request (3)
+36 04 c0 a8 02 01 => Option: (54) DHCP Server Identifier
+                     Length: 4
+		     DHCP Server Identifier: 192.168.2.1 (192.168.2.1)
+32 04 c0 a8 02 02 => Option: (50) Requested IP Address
+                     Length: 4
+                     Requested IP Address: 192.168.2.2 (192.168.2.2)
+ff => Option: (255) End
+* Ethernet II CRC
+XXXX
+
+# DHCP ACK - Transaction ID 0xadde1223 (346 bytes)
+* Ethernet II
+ff ff ff ff ff ff => Destination: Broadcast (ff:ff:ff:ff:ff:ff)
+02 26 b0 9e f3 64 => Source: 02:26:b0:9e:f3:64 (02:26:b0:9e:f3:64)
+08 00 => Type: IP (0x0800)
+* Internet Protocol
+45 => Version: 4, Header length: 20 bytes
+00 => Differentiated Services Field: 0x00 (DSCP 0x00: Default; ECN: 0x00: Not-ECT (Not ECN-Capable Transport))
+01 48 => Total Length: 328
+46 ae => Identification: 0x46ae (18094)
+00 => Flags: 0x00
+00 => Fragment offset: 0 
+ff => Time to live: 255
+11 => Protocol: UDP (17)
+b1 4d => Header checksum: 0xb14d [correct]
+c0 a8 02 01 => Source: 192.168.2.1 (192.168.2.1)
+ff ff ff ff => Destination: 255.255.255.255 (255.255.255.255)
+* User Datagram Protocol 
+00 43 => Source port: bootps (67) 
+00 44 => Destination port: bootpc (68)
+01 34 => Length: 308
+5c e5 => Checksum: 0x5ce5 [validation disabled]
+* Bootstrap Protocol
+02 => Message type: Boot Reply (2) 
+01 => Hardware type: Ethernet (0x01) 
+06 => Hardware address length: 6
+00 => Hops: 0 
+ad de 12 23 => Transaction ID: 0xadde1223 
+00 00 => Seconds elapsed: 0
+80 00 => Bootp flags: 0x8000 (Broadcast)
+00 00 00 00 => Client IP address: 0.0.0.0 (0.0.0.0) 
+c0 a8 02 02 => Your (client) IP address: 192.168.2.2 (192.168.2.2) 
+c0 a8 02 01 => Next server IP address: 192.168.2.1 (192.168.2.1)
+00 00 00 00 => Relay agent IP address: 0.0.0.0 (0.0.0.0)
+00 01 02 03 04 05 => Client MAC address: 3com_03:04:05 (00:01:02:03:04:05) 
+00 00 00 00 00 00 00 00 00 00 => Client hardware address padding: 00000000000000000000 
+4b 69 6d 48 79 75 6e 2d 4f 6b 75 69 2d 4d 61 63 
+42 6f 6f 6b 2d 50 72 6f 2e 6c 6f 63 61 6c 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 => Server host name: KimHyun-Okui-MacBook-Pro.local 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 => Boot file name not given 
+63 82 53 63 => Magic cookie: DHCP
+35 01 05 => Option: (53) DHCP Message Type
+            Length: 1
+            DHCP: ACK (5)
+36 04 c0 a8 02 01 => Option: (54) DHCP Server Identifier
+                     Length: 4
+		     DHCP Server Identifier: 192.168.2.1 (192.168.2.1) 
+33 04 00 01 4e 20 => Option: (51) IP Address Lease Time
+                     Length: 4
+                     IP Address Lease Time: (85536s) 23 hours, 45 minutes, 36 seconds
+ff => Option: (255) End 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 => Padding
+* Ethernet II CRC
+XXXX
+
