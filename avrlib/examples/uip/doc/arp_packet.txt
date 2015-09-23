@@ -1,7 +1,10 @@
-# arping request (64bytes)
+# request - Who has 192.168.0.1? Tell 192.168.0.10 (64bytes)
 
 * Ethernet II
-00 01 02 03 04 05 => Destination MAC Address
+ff ff ff ff ff ff => Destination MAC Address
+                     Address: Broadcast (ff:ff:ff:ff:ff:ff)
+		     .... ..1. .... .... .... .... = LG bit: Locally administered address (this is NOT the factory default)
+		     .... ...1 .... .... .... .... = IG bit: Group address (multicast/broadcast)
 74 e6 e2 d7 f8 7e => Source MAC Address
 08 06 => Type: ARP(0x0806)
 * Address Resolution Protocol (request)
@@ -12,7 +15,7 @@
 00 01 => Opcode: request (1) 
 74 e6 e2 d7 f8 7e => Send MAC address 
 c0 a8 00 0a => Send IP address: 192.168.0.10
-00 01 02 03 04 05 => Target MAC address
+00 00 00 00 00 00 => Target MAC address
 c0 a8 00 01 => Target IP address: 192.168.0.1
 * Ethernet II Pading
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
@@ -20,7 +23,7 @@ c0 a8 00 01 => Target IP address: 192.168.0.1
 * Etherent CRC
 XX XX XX XX
 
-# arping reply (60bytes)
+# reply - 192.168.0.1 is at 00:01:02:03:04:05 (60bytes)
 
 * Ethernet II
 74 e6 e2 d7 f8 7e => Destination 
@@ -35,7 +38,7 @@ XX XX XX XX
 00 01 02 03 04 05 => Send MAC address
 c0 a8 00 01 =>  Send IP address: 192.168.0.1
 74 e6 e2 d7 f8 7e => Target MAC address
-c0 a8 00 0a => Target IP address: 192.168.0.1
+c0 a8 00 0a => Target IP address: 192.168.0.10
 * Ethernet II Pading
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 00 00

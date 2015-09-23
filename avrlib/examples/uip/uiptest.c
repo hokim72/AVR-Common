@@ -3,7 +3,7 @@
 #include <avr/io.h>
 #include <avr/power.h>
 
-//#define MY_DEBUG
+#define MY_DEBUG
 #ifdef MY_DEBUG
 #include "uart.h"
 #include "rprintf.h"
@@ -13,8 +13,8 @@
 #include "uip/timer.h"
 #include "nicconf.h"
 #include "uip/uip_arp.h"
-#include "network.h"
-#include "enc28j60.h"
+#include "nic/network.h"
+#include "nic/enc28j60/enc28j60.h"
 
 
 #include <string.h>
@@ -31,7 +31,7 @@ int main(void)
 
 	//CLKPR = (1<<CLKPCE);	//Change prescaler
 	//CLKPR = (1<<CLKPS0);	//Use prescaler 2
-	clock_prescale_set(clock_div_2);
+	//clock_prescale_set(clock_div_2);
 	enc28j60Write(ECOCON, 1 & 0x7);	
 	// enc28j60.c
 	//Get a 25MHz signal from enc28j60
@@ -164,14 +164,14 @@ int main(void)
 			}else if(BUF->type == htons(UIP_ETHTYPE_ARP)){
 				// UIP_ETHYPE_ARP(0x0806)
 				#ifdef MY_DEBUG
-				//rprintf("arp in : uip_len = %d\n", uip_len);
+				//rprintf("eth in : uip_len = %d\n", uip_len);
 				//debugPrintHexTable(uip_len, uip_buf);
 				#endif
 				// arp in : 64 bytes
 				uip_arp_arpin();
 				if(uip_len > 0){ // always uip_len > 0
 					#ifdef MY_DEBUG
-					//rprintf("ip in : uip_len = %d\n", uip_len);
+					//rprintf("arp in : uip_len = %d\n", uip_len);
 					//debugPrintHexTable(uip_len, uip_buf);
 					#endif
 					// arp out : 42 bytes

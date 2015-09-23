@@ -12,8 +12,8 @@
 #include "uip/timer.h"
 #include "nicconf.h"
 #include "uip/uip_arp.h"
-#include "network.h"
-#include "enc28j60.h"
+#include "nic/network.h"
+#include "nic/enc28j60/enc28j60.h"
 
 
 #include <string.h>
@@ -28,7 +28,7 @@ int main(void)
 
 	//CLKPR = (1<<CLKPCE);	//Change prescaler
 	//CLKPR = (1<<CLKPS0);	//Use prescaler 2
-	clock_prescale_set(clock_div_2);
+	//clock_prescale_set(clock_div_2);
 	enc28j60Write(ECOCON, 1 & 0x7);	//Get a 25MHz signal from enc28j60
 
 	#if MY_DEBUG

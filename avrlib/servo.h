@@ -39,9 +39,9 @@
 #ifndef SERVO_H
 #define SERVO_H
 
+#include <inttypes.h>
 #include "global.h"
 #include "timer.h"
-#include <avr/io.h>
 
 // include configuration
 #include "servoconf.h"

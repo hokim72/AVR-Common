@@ -30,10 +30,10 @@
 #ifndef UART_H
 #define UART_H
 
+#include <inttypes.h>
 #include "global.h"
 #include "buffer.h"
 #include "uartconf.h"
-#include <avr/io.h>
 
 // Default uart baud rate.
 // This is the default speed after a uartInit() command,

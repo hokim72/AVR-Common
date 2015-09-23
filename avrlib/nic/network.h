@@ -25,9 +25,6 @@ void network_set_MAC(uint8_t* mac);
 /*Gets the MAC address of the device*/
 void network_get_MAC(uint8_t* mac);
 
-/* Print network interface hardware registers */
-inline void network_print_Reg(void);
-
 /* get the state of the network link on the interface 1 up, 0 down */
 uint8_t network_link_state(void);
 

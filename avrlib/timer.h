@@ -44,8 +44,8 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+#include <inttypes.h>
 #include "global.h"
-#include <avr/io.h>
 
 // Timer/clock prescaler values and timer overflow rates
 // tics = rate at which the timer counts up

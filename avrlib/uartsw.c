@@ -13,6 +13,7 @@ static volatile uint8_t UartswTxBitNum;
 // baud rate common to transmit and receive
 static volatile uint16_t UartswBaudRateDiv;
 
+#ifndef UARTSW_TX_ONLY
 // uartsw receive status and data variables
 static volatile uint8_t UartswRxBusy;
 static volatile uint8_t UartswRxData;
@@ -21,6 +22,7 @@ static volatile uint8_t UartswRxBitNum;
 static cBuffer uartswRxBuffer;				// uartsw receive buffer
 // automatically allocate space in ram for each buffer
 static unsigned char uartswRxData[UARTSW_RX_BUFFER_SIZE];
+#endif
 
 // functions
 
@@ -36,11 +38,13 @@ void uartswInit(void)
 	#else
 	sbi(UARTSW_TX_PORT, UARTSW_TX_PIN);
 	#endif
+	#ifndef UARTSW_TX_ONLY
 	cbi(UARTSW_RX_DDR, UARTSW_RX_PIN);
 	#ifdef UARTSW_INVERT
 	cbi(UARTSW_RX_PORT, UARTSW_RX_PIN);
 	#else
 	sbi(UARTSW_RX_PORT, UARTSW_RX_PIN);
+	#endif
 	#endif
 	// initialize baud rate
 	uartswSetBaudRate(9600);
@@ -52,6 +56,7 @@ void uartswInit(void)
 	// attach TxBit service routine to OC1A
 	timerAttach(TIMER1OUTCOMPAREA_INT, uartswTxBitService);
 
+	#ifndef UARTSW_TX_ONLY
 	// setup the receiver
 	UartswRxBusy = FALSE;
 	// disable OC1B interrupt
@@ -69,6 +74,7 @@ void uartswInit(void)
 	#endif
 	// enable ICP interrupt
 	sbi(TIMSK1, ICIE1);
+	#endif
 
 	// turn on interrupts
 	sei();
@@ -77,8 +83,10 @@ void uartswInit(void)
 // create and initialize the uart buffers
 void uartswInitBuffers(void)
 {
+	#ifndef UARTSW_TX_ONLY
 	// initialize the UART receive buffer
 	bufferInit(&uartswRxBuffer, uartswRxData, UARTSW_RX_BUFFER_SIZE);
+	#endif
 }
 
 // turns off software UART
@@ -86,12 +94,16 @@ void uartswOff(void)
 {
 	// disable interrupts
 	cbi(TIMSK1, OCIE1A);
+	#ifndef UARTSW_TX_ONLY
 	cbi(TIMSK1, OCIE1B);
 	cbi(TIMSK1, ICIE1);
+	#endif
 	// detach the service routines
 	timerDetach(TIMER1OUTCOMPAREA_INT);
+	#ifndef UARTSW_TX_ONLY
 	timerDetach(TIMER1OUTCOMPAREB_INT);
 	timerDetach(TIMER1INPUTCAPTURE_INT);
+	#endif
 }
 
 void uartswSetBaudRate(uint32_t baudrate)
@@ -102,12 +114,14 @@ void uartswSetBaudRate(uint32_t baudrate)
 	UartswBaudRateDiv = (uint16_t)((F_CPU+(baudrate/2L))/(baudrate*1L));
 }
 
+#ifndef UARTSW_TX_ONLY
 // returns the receive buffer structure
 cBuffer* uartswGetRxBuffer(void)
 {
 	// return rx buffer pointer
 	return &uartswRxBuffer;
 }
+#endif
 
 void uartswSendByte(uint8_t data)
 {
@@ -133,6 +147,7 @@ void uartswSendByte(uint8_t data)
 	sbi(TIMSK1, OCIE1A);
 }
 
+#ifndef UARTSW_TX_ONLY
 // gets a single byte from the uart receive buffer (getchar-style)
 int uartswGetByte(void)
 {
@@ -168,6 +183,7 @@ uint8_t uartswReceiveByte(uint8_t* rxData)
 		return FALSE;
 	}
 }
+#endif
 
 void uartswTxBitService(void)
 {
@@ -212,6 +228,7 @@ void uartswTxBitService(void)
 	}
 }
 
+#ifndef UARTSW_TX_ONLY
 void uartswRxBitService(void)
 {
 	// this function runs on either:
@@ -276,3 +293,4 @@ void uartswRxBitService(void)
 		}
 	}
 }
+#endif

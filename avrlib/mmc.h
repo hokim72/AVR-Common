@@ -29,8 +29,8 @@
 #ifndef MMC_H
 #define MMC_H
 
+#include <inttypes.h>
 #include "global.h"
-#include <avr/io.h>
 
 #include "mmcconf.h"
 

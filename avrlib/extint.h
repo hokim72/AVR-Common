@@ -13,8 +13,8 @@
 #ifndef EXTINT_H
 #define EXTINT_H
 
+#include <inttypes.h>
 #include "global.h"
-#include <avr/io.h>
 
 // constants/macros/typedefs
 

@@ -14,6 +14,7 @@
 #ifndef RPRINTF_H
 #define RPRINTF_H
 
+#include "global.h"
 // needed for use of PSTR below
 #include <avr/pgmspace.h>
 

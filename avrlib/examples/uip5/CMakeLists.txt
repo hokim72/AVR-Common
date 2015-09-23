@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
 
 set(MCU atmega328p)
-#set(F_CPU 16000000UL)
-set(F_CPU 8000000UL)
+set(F_CPU 16000000UL)
+#set(F_CPU 8000000UL)
 set(OPTIMIZATION s)
 set(C_STANDARD gnu99)
 
@@ -17,8 +17,6 @@ set(LD_FLAGS "-mmcu=${MCU} -Wl,-Map,${TARGET}.map -Wl,--gc-sections")
 
 set(AVRLIB $ENV{AVR_COMMON}/avrlib)
 include_directories(${CMAKE_SOURCE_DIR} ${AVRLIB} 
-	${AVRLIB}/nic/interfaces   
-	${AVRLIB}/nic/enc28j60   
 	${CMAKE_SOURCE_DIR}/apps/simple-httpd
 	${CMAKE_SOURCE_DIR}/apps/dhcpc
 )

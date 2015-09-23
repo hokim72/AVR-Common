@@ -42,8 +42,8 @@
 #ifndef I2C_H
 #define I2C_H
 
+#include <inttypes.h>
 #include "global.h"
-#include <avr/io.h>
 
 // include project-specific configuration
 #include "i2cconf.h"

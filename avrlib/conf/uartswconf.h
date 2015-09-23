@@ -45,5 +45,7 @@
 #define UARTSW_RX_PORTIN			PINB		// UART Receive Port Input
 #define UARTSW_RX_PIN				PB0			// UART Receive Pin
 
+//#define UARTSW_TX_ONLY
+
 #endif
 

@@ -17,8 +17,8 @@
 #ifndef PULSE_H
 #define PULSE_H
 
+#include <inttypes.h>
 #include "global.h"
-#include <avr/io.h>
 
 // functions
 

@@ -10,7 +10,7 @@ set(PROG_ARGS -P /dev/ttyUSB0 -b 115200)
 
 set(TARGET fatfstest)
 
-set(CPP_FLAGS "-DF_CPU=${F_CPU} -mmcu=${MCU} -DRPRINTF_COMPLEX")
+set(CPP_FLAGS "-DF_CPU=${F_CPU} -mmcu=${MCU}")
 set(C_FLAGS "-O${OPTIMIZATION} -g -std=${C_STANDARD} -Wall -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections")
 set(LD_FLAGS "-mmcu=${MCU} -Wl,-Map,${TARGET}.map -Wl,--gc-sections")
 
@@ -39,7 +39,7 @@ add_custom_target(${TARGET} ALL
 	COMMAND ${OBJCOPY} -O binary -R .eeprom -R .fuse -R .lock -R .signature ${TARGET}.elf ${TARGET}.bin
 	COMMAND ${OBJDUMP} -h -d -S -z ${TARGET}.elf > ${TARGET}.lss
 	COMMAND ${NM} -n ${TARGET}.elf > ${TARGET}.sym
-	COMMAND ${SIZE} ${SIZE_MCU_FLAG} ${SIZE_FORMAT_FLAG} ${TARGET}.elf
+	COMMAND ${SIZE} -C --mcu=${MCU} ${TARGET}.elf
 	DEPENDS ${TARGET}.elf
 )
 

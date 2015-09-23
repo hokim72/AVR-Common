@@ -6,8 +6,8 @@
 #ifndef SPI_H
 #define SPI_H
 
+#include <inttypes.h>
 #include "global.h"
-#include <avr/io.h>
 
 // includ configuration
 #include "spiconf.h"

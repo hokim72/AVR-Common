@@ -4,8 +4,8 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#include <inttypes.h>
 #include "global.h"
-#include <avr/io.h>
 
 // function prototypes
 

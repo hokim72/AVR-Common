@@ -18,10 +18,9 @@
 #ifndef UARTSW2_H
 #define UARTSW2_H
 
+#include <inttypes.h>
 #include "global.h"
 #include "buffer.h"
-#include <avr/io.h>
-#include <avr/interrupt.h>
 
 // include configuration
 #include "uartsw2conf.h"

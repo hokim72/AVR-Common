@@ -18,9 +18,9 @@
 #ifndef UARTSW_H
 #define UARTSW_H
 
+#include <inttypes.h>
 #include "global.h"
 #include "buffer.h"
-#include <avr/io.h>
 
 // include configuration
 #include "uartswconf.h"

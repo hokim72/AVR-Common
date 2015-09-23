@@ -19,8 +19,8 @@
 #ifndef LCD_H
 #define LCD_H
 
+#include <inttypes.h>
 #include "global.h"
-#include <avr/io.h>
 
 // include project-dependent configurations
 #include "lcdconf.h"

@@ -33,7 +33,7 @@ add_custom_target(${TARGET} ALL
 	COMMAND ${OBJCOPY} -O binary -R .eeprom -R .fuse -R .lock -R .signature ${TARGET}.elf ${TARGET}.bin
 	COMMAND ${OBJDUMP} -h -d -S -z ${TARGET}.elf > ${TARGET}.lss
 	COMMAND ${NM} -n ${TARGET}.elf > ${TARGET}.sym
-	COMMAND ${SIZE} ${SIZE_MCU_FLAG} ${SIZE_FORMAT_FLAG} ${TARGET}.elf
+	COMMAND ${SIZE} -C --mcu=${MCU} ${TARGET}.elf
 	DEPENDS ${TARGET}.elf
 )
 
