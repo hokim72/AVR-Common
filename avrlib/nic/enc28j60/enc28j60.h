@@ -26,8 +26,8 @@
 #ifndef ENC28J60_H
 #define ENC28J60_H
 
+#include <inttypes.h>
 #include "global.h"
-#include <avr/io.h>
 
 //#define nop()	asm volatile ("nop")
 

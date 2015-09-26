@@ -68,7 +68,8 @@ void arpArpIn(unsigned int len, struct netEthArpHeader* packet)
 			 #endif
 
 			 // send reply!
-			 nicSend(len-4, (unsigned char*)packet);
+			 //nicSend(len-4, (unsigned char*)packet);
+			 nicSend(len, (unsigned char*)packet);
 	}
 }
 

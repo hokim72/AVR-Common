@@ -2,45 +2,38 @@ cmake_minimum_required(VERSION 3.1)
 
 set(MCU atmega328p)
 set(F_CPU 16000000UL)
-#set(F_CPU 8000000UL)
 set(OPTIMIZATION s)
 set(C_STANDARD gnu99)
 
 set(PROG_TYPE arduino)
 set(PROG_ARGS -P /dev/ttyUSB0 -b 115200)
 
-set(TARGET uiptest)
+set(TARGET netstack2test)
 
-set(CPP_FLAGS "-DF_CPU=${F_CPU} -mmcu=${MCU} -D__PROG_TYPES_COMPAT__") # -D__PROG_TYPES_COMPAT__ to suppress "prog_char" error 
-set(C_FLAGS "-O${OPTIMIZATION} -g -std=${C_STANDARD} -Wall -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wno-deprecated-declarations -fno-strict-aliasing") 
-# -Wno-deprecated-declarations to suppress "prog_char" error
-# -fno-strict-aliasing to suppress warning: dereferencing type-punned pointer will break strict-aliasing rules
+set(CPP_FLAGS "-DF_CPU=${F_CPU} -mmcu=${MCU}")
+set(C_FLAGS "-O${OPTIMIZATION} -g -std=${C_STANDARD} -Wall -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections")
 set(LD_FLAGS "-mmcu=${MCU} -Wl,-Map,${TARGET}.map -Wl,--gc-sections")
 
 set(AVRLIB $ENV{AVR_COMMON}/avrlib)
-include_directories(${CMAKE_SOURCE_DIR} ${AVRLIB} 
-	${CMAKE_SOURCE_DIR}/apps/simple-httpd
-	#${CMAKE_SOURCE_DIR}/apps/dhcpc
+include_directories(${CMAKE_SOURCE_DIR} ${AVRLIB}
 )
 set(AVRLIB_SRCS 
 	${AVRLIB}/buffer.c
 	${AVRLIB}/uart.c
 	${AVRLIB}/rprintf.c
 	${AVRLIB}/debug.c
-	${AVRLIB}/uip/uip.c	
-	${AVRLIB}/uip/uip_arp.c	
-	${AVRLIB}/uip/psock.c	
-	${AVRLIB}/uip/timer.c	
-	${AVRLIB}/uip/uiplib.c	
-	${AVRLIB}/nic/enc28j60/enc28j60.c	
-	${AVRLIB}/nic/enc28j60/network.c
+	${AVRLIB}/timer.c
+	${AVRLIB}/net/netstack.c
+	${AVRLIB}/net/net.c
+	${AVRLIB}/net/arp.c
+	${AVRLIB}/net/ip.c
+	${AVRLIB}/net/icmp.c
+	${AVRLIB}/net/w5100if.c
+	${AVRLIB}/nic/w5100/w5100.c
+	${AVRLIB}/nic/w5100/socket.c
 )
 
-set(SRCS ${TARGET}.c ${AVRLIB_SRCS} 
-	clock-arch.c 
-	apps/simple-httpd/simple-httpd.c
-	#apps/dhcpc/dhcpc.c
-)
+set(SRCS ${TARGET}.c ${AVRLIB_SRCS})
 
 add_executable(${TARGET}.elf ${SRCS})
 set_target_properties(${TARGET}.elf PROPERTIES COMPILE_FLAGS "${CPP_FLAGS} ${C_FLAGS}")

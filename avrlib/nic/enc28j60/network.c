@@ -4,7 +4,8 @@
 #include <util/delay.h>
 
 unsigned int network_read(void){
-	return ((uint16_t) enc28j60PacketReceive(UIP_BUFSIZE, (uint8_t *)uip_buf));
+	//return ((uint16_t) enc28j60PacketReceive(UIP_BUFSIZE, (uint8_t *)uip_buf));
+	return ((uint16_t) enc28j60PacketReceive(UIP_BUFSIZE, (uint8_t *)uip_buf))-4; // Ignore Ethernet CRC(4 bytes)
 }
 
 void network_send(void){

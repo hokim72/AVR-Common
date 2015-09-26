@@ -107,7 +107,8 @@ void nicSend(unsigned int len, unsigned char* packet)
 
 unsigned int nicPoll(unsigned int maxlen, unsigned char* packet)
 {
-	return enc28j60PacketReceive(maxlen, packet);
+	//return enc28j60PacketReceive(maxlen, packet);
+	return enc28j60PacketReceive(maxlen, packet)-4; // Ignore Ethernet CRC (4 bytes) 
 }
 
 void nicGetMacAddress(uint8_t* macaddr)
