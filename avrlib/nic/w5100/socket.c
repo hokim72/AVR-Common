@@ -266,6 +266,11 @@ uint16_t recv(uint8_t s, uint8_t* buf, uint16_t len)
 
 	sockaddr = W5100_SKT_BASE(s);
 
+	ret = W51_read(sockaddr+W5100_RX_RSR_OFFSET);
+	ret =  ((ret & 0x00FF) << 8) + W51_read(sockaddr+W5100_RX_RSR_OFFSET+1);
+
+	if (ret == 0 ) return ret;
+
 	if (len > 0) 
 	{
 		W51_recv_data_processing(s, buf, len);
@@ -344,6 +349,11 @@ uint16_t recvfrom(uint8_t s, uint8_t* buf, uint16_t len, uint8_t* addr, uint16_t
 	uint16_t sockaddr;
 
 	sockaddr = W5100_SKT_BASE(s);
+
+	data_len = W51_read(sockaddr+W5100_RX_RSR_OFFSET);
+	data_len =  ((data_len & 0x00FF) << 8) + W51_read(sockaddr+W5100_RX_RSR_OFFSET+1);
+
+	if (data_len == 0 ) return data_len;
 
 	if (len > 0)
 	{
