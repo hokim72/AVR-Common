@@ -1,7 +1,0 @@
-#ifndef UARTCONF_H
-#define UARTCONF_H
-
-#define UART_TX_BUFFER_SIZE 0x0040
-#define UART_RX_BUFFER_SIZE 0x0040
-
-#endif

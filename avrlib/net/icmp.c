@@ -52,6 +52,7 @@ void icmpEchoRequest(icmpip_hdr* packet)
 	#endif
 
 	// send it (packet->ip.len+ETH_HEADER_LEN
+	//debugPrintHexTable(htons(packet->ip.len)+ETH_HEADER_LEN, (((uint8_t*) packet)-ETH_HEADER_LEN));
 	nicSend(htons(packet->ip.len)+ETH_HEADER_LEN, (((uint8_t*) packet)-ETH_HEADER_LEN));
 }
 

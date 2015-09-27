@@ -1,0 +1,67 @@
+# ping request (102bytes)
+
+* Ethernet II
+01 02 03 04 05 06 => Destination MAC Address
+74 e6 e2 d7 f8 7e => Source MAC Address
+08 00  => Type: IP (0x0800)
+* Internet Protocol
+45 => Version: 4
+00 => Differentiated Service Field : 0x00 (DSCP 0x00: Default)
+00 54 => Total Length: 84 
+e7 6f => Identification: 0xe76f (59247) ; incerement by 1 in the next packet
+40 00 => Flags : 0x010 (Don't Fragment), Fragment offset: 0b0 0000 0000 0000 
+40 => Time to live: 64
+01 => Protocol: ICMP (1)
+d1 dd => Header checksum: 0xd1dd [correct]
+c0 a8 00 0a => Source: 192.168.0.10
+c0 a8 00 01 => Destination: 192.168.0.1
+* Internet Control Message Protocol 
+08 => Type: 8 (Echo (ping) request)
+00 => Code: 0
+f1 86 => Checksum: 0xf186 [correct] 
+14 24 => Identifier (BE): 5156(0x1424)
+      => Identifier (LE) : 9236(0x2414)
+00 03 => Sequence number (BE): 3 (0x0003) ; increment by 1 in the next packet
+      => Sequence number (LE): 768 (0x0300) 
+e1 52 fd 55 00 00 00 00 => Timestamp from icmp data: Sep 19, 2015 21:19:45.000000000 KST
+		     [Timestamp from icmp data (relative): 0.317035000 seconds]
+50 d6 04 00 00 00 00 00 10 11 12 13 14 15 16 17 
+18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 
+28 29 2a 2b 2c 2d 2e 2f 30 31 32 33 34 35 36 37 
+=> Data (48Bytes)
+* Etherent II CRC
+XX XX XX XX 
+
+# ping reply (102 byte)
+
+* Ethernet II
+74 e6 e2 d7 f8 7e => Destination Address
+01 02 03 04 05 06 => Source Address
+08 00 => Type: IP (0x0800)
+* Internet Protocol
+45 => Version: 4
+00 => Differentiated Service Field : 0x00 (DSCP 0x00: Default)
+00 54 => Total Length: 84
+e7 6f => Identification: 0xe76f (59247)
+40 00 => Flags : 0x010 (Don't Fragment), Fragment offset: 0b0 0000 0000 0000  
+40 => Time to live: 64
+01 => Protocol: ICMP (1)
+d1 dd =>  Checksum: 0xd1dd [correct]
+c0 a8 00 01 =>  Source: 192.168.0.1
+c0 a8 00 0a =>  Destination: 192.168.0.10
+* Internet Control Message Protocol
+00 => Type: 0 (Echo (ping) rely) 
+00 => Code: 0
+f9 86 => Checksum: 0xf986 [correct]
+14 24 => Identifier (BE): 5156(0x1424)
+      => Identifier (LE) : 9236(0x2414)
+00 03 => Sequence number (BE): 3(0x0003)
+      => Sequence number (LE): 768(0x0300) 
+e1 52 fd 55 00 00 00 00 => Timestamp from icmp data: Sep 19, 2015 21:19:45.000000000 KST
+		     [Timestamp from icmp data: 1.335200000 seconds]
+50 d6 04 00 00 00 00 00 10 11 12 13 14 15 16 17 
+18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 
+28 29 2a 2b 2c 2d 2e 2f 30 31 32 33 34 35 36 37 
+=> Data (48Bytes)
+* Etherent II CRC
+XX XX XX XX 

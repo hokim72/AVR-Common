@@ -1,29 +1,28 @@
 #include <inttypes.h>
 
-#include "global.h"
 #include "nic/w5100/socket.h"
 #include "nic/w5100/w5100.h"
 #include "nic.h"
-#include "rprintf.h"
 #include "nicconf.h"
 
 void nicInit(void)
 {
-	uint8_t macAddr[6];
+	uint8_t macaddr[6];
+
 	W51_init();
-	macAddr[0] = ETHADDR0;
-	macAddr[1] = ETHADDR1;
-	macAddr[2] = ETHADDR2;
-	macAddr[3] = ETHADDR3;
-	macAddr[4] = ETHADDR4;
-	macAddr[5] = ETHADDR5;
-	nicSetMacAddress(macAddr);
+	macaddr[0] = ETHADDR0;
+	macaddr[1] = ETHADDR1;
+	macaddr[2] = ETHADDR2;
+	macaddr[3] = ETHADDR3;
+	macaddr[4] = ETHADDR4;
+	macaddr[5] = ETHADDR5;
+	nicSetMacAddress(macaddr);
 	socket(MACRAW_SOCKET, W5100_SKT_MR_MACRAW, 0x00, 0x00);
 }
 
 void nicSend(unsigned int len, unsigned char* packet)
 {
-	macraw_send(packet, len);
+	macraw_send(packet, len, 0, 0);
 }
 
 unsigned int nicPoll(unsigned int maxlen, unsigned char* packet)

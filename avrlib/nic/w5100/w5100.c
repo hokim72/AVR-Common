@@ -4,10 +4,42 @@
 #include "global.h"
 
 #include "w5100.h"
+//#define MY_DEBUG
+#ifdef MY_DEBUG
 #include "rprintf.h"
+#endif
+
+void W51_config(W51_CFG* pcfg)
+{
+	W51_write(W5100_SHAR, pcfg->macaddr[0]);	// set up the MAC address
+	W51_write(W5100_SHAR+1, pcfg->macaddr[1]);
+	W51_write(W5100_SHAR+2, pcfg->macaddr[2]);
+	W51_write(W5100_SHAR+3, pcfg->macaddr[3]);
+	W51_write(W5100_SHAR+4, pcfg->macaddr[4]);
+	W51_write(W5100_SHAR+5, pcfg->macaddr[5]);
+
+	W51_write(W5100_SIPR, pcfg->ipaddr[0]);	// set up the source IP address
+	W51_write(W5100_SIPR+1, pcfg->ipaddr[1]);	
+	W51_write(W5100_SIPR+2, pcfg->ipaddr[2]);	
+	W51_write(W5100_SIPR+3, pcfg->ipaddr[3]);	
+
+	W51_write(W5100_SUBR, pcfg->submask[0]);	// set up the subnet mask
+	W51_write(W5100_SUBR+1, pcfg->submask[1]);	
+	W51_write(W5100_SUBR+2, pcfg->submask[2]);	
+	W51_write(W5100_SUBR+3, pcfg->submask[3]);	
+
+	W51_write(W5100_GAR, pcfg->gwaddr[0]);	// set up the gateway address
+	W51_write(W5100_GAR+1, pcfg->gwaddr[1]);	
+	W51_write(W5100_GAR+2, pcfg->gwaddr[2]);	
+	W51_write(W5100_GAR+3, pcfg->gwaddr[3]);	
+}
 
 void W51_init(void)
 {
+	#ifdef MY_DEBUG
+	uint8_t ret;
+	#endif
+
 	// initialize I/O
 	sbi(W5100_CONTROL_DDR, W5100_CONTROL_CS);
 	sbi(W5100_CONTROL_PORT, W5100_CONTROL_CS);
@@ -36,6 +68,11 @@ void W51_init(void)
 
 	W51_write(W5100_MR, W5100_MR_SOFTRST);
 	_delay_ms(1);
+
+	#ifdef MY_DEBUG
+	ret = W51_read(W5100_MR);
+	rprintfProgStrM("MR = 0x"); rprintfu08(ret); rprintfCRLF();
+	#endif
 
 	W51_write(W5100_RMSR, 0x55);                    // use default buffer sizes (2K bytes RX and TX for each socket
 

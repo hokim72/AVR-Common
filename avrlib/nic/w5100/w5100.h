@@ -153,6 +153,20 @@
 #define W5100_SKT_SR_MACRAW			0x42 // MAC raw mode socket
 #define W5100_SKT_SR_PPPOE			0x5F // PPPOE socket
 
+// The W51_CFG structure holds the target-specific MAC, IP, 
+// and gateway addresses, as well as the subnet mask.
+typedef struct W51_cfg_t
+{
+	uint8_t macaddr[6];
+	uint8_t ipaddr[4];
+	uint8_t submask[4];
+	uint8_t gwaddr[4];
+} W51_CFG;
+
+// Setup MAC and TCP addresses for the entire device 
+// This routine uses the contents of the W51_CFG structure pointed to
+// by argument pcfg to configure the W5100 IP address and MAC value.
+void W51_config(W51_CFG* pcfg);
 
 // initialize the W5100 chip
 // This routine resets the W5100 chip and may be called at any time; it should

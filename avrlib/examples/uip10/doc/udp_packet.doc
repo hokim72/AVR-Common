@@ -1,0 +1,28 @@
+
+64 bytes
+
+* Ethernet II
+74 e6 e2 d7 f8 7e => Destination MAC Address
+00 01 02 03 04 05 => Source MAC Address
+08 00 => Type: IP (0x8000)
+* Internet Protocol
+45 => Version: 4, Header length: 20 bytes
+00 => Differentiated Service Field : 0x00 (DSCP 0x00: Default)
+00 2a => Total Length: 42 
+00 14 => Identification: 0x0014 (20)
+00 00 => Flags: 0b000, Fragment offset: 0b0 0000 0000 0000  
+40 => Time to live: 64
+11 => Protocol: UDP (17)
+f9 53 => Header checksum: 0xf953 [correct]
+c0 a8 00 01 => Source: 192.168.0.1
+c0 a8 00 0a => Destination: 192.168.0.10
+* User Datagram Protocol 
+04 01 => Source port: 1025
+27 10 => Destination port: 10000
+00 16 => Length: 22
+19 93 => Checksum: 0x1993 [validation disabled]
+6d 79 74 69 6d 65 72 20 3d 20 31 39 0a 00 => Data (14 bytes): "mytime = 19\n\0" 
+* Ethernet Padding
+00 00 00 00
+* Etherent II CRC
+XX XX XX XX 

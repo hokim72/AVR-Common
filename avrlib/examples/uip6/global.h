@@ -15,7 +15,9 @@
 
 #define CYCLES_PER_US	((F_CPU+500000)/1000000)	// cpu cycles per microsecond
 
-#define UART_TX_BUFFER_SIZE 0x0100
-#define UART_RX_BUFFER_SIZE 0x0040
-
+//#define NETSTACK_DEBUG
+//#define ARP_DEBUG
+//#define ARP_DEBUG_PRINT
+//#define NET_DEBUG 5
+//#define ICMP_DEBUG_PRINT
 #endif

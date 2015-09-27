@@ -41,8 +41,6 @@ int main(void)
 	timerPause(100);
 	rprintf("\r\nNetwork Stack Example\r\n");
 
-	// init network network stack
-	rprintf("Initializing Network Stack\r\n");
     timer2SetPrescaler(TIMER_CLK_DIV1024);
     timerAttach(TIMER2OVERFLOW_INT, systickHandler);
 

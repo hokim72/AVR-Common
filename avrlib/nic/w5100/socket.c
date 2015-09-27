@@ -1,6 +1,8 @@
 #include "w5100.h"
 
 #include "socket.h"
+#include "rprintf.h"
+#include "debug.h"
 
 static uint16_t local_port;
 
@@ -259,6 +261,16 @@ uint16_t send(uint8_t s, uint8_t* buf, uint16_t len)
 	return ret;
 }
 
+uint16_t recvsize(uint16_t sockaddr)
+{
+	uint16_t ret;
+
+	ret = W51_read(sockaddr+W5100_RX_RSR_OFFSET);
+	ret =  ((ret & 0x00FF) << 8) + W51_read(sockaddr+W5100_RX_RSR_OFFSET+1);
+
+	return ret;
+}
+
 uint16_t recv(uint8_t s, uint8_t* buf, uint16_t len)
 {
 	uint16_t ret = 0;
@@ -266,9 +278,7 @@ uint16_t recv(uint8_t s, uint8_t* buf, uint16_t len)
 
 	sockaddr = W5100_SKT_BASE(s);
 
-	ret = W51_read(sockaddr+W5100_RX_RSR_OFFSET);
-	ret =  ((ret & 0x00FF) << 8) + W51_read(sockaddr+W5100_RX_RSR_OFFSET+1);
-
+	ret = recvsize(sockaddr);
 	if (ret == 0 ) return ret;
 
 	if (len > 0) 
@@ -350,9 +360,7 @@ uint16_t recvfrom(uint8_t s, uint8_t* buf, uint16_t len, uint8_t* addr, uint16_t
 
 	sockaddr = W5100_SKT_BASE(s);
 
-	data_len = W51_read(sockaddr+W5100_RX_RSR_OFFSET);
-	data_len =  ((data_len & 0x00FF) << 8) + W51_read(sockaddr+W5100_RX_RSR_OFFSET+1);
-
+	data_len = recvsize(sockaddr);
 	if (data_len == 0 ) return data_len;
 
 	if (len > 0)
@@ -428,7 +436,7 @@ uint16_t recvfrom(uint8_t s, uint8_t* buf, uint16_t len, uint8_t* addr, uint16_t
 	return data_len;
 }
 
-uint16_t macraw_send(uint8_t* buf, uint16_t len)
+uint16_t macraw_send(uint8_t* buf1, uint16_t len1, uint8_t* buf2, uint16_t len2)
 {
 	uint16_t ptr;
 	uint16_t ret;
@@ -436,9 +444,9 @@ uint16_t macraw_send(uint8_t* buf, uint16_t len)
 
 	sockaddr = W5100_SKT_BASE(MACRAW_SOCKET);
 
-	if (len >  W5100_TX_BUF_SIZE)
+	if (len1+len2 >  W5100_TX_BUF_SIZE)
 		ret = W5100_TX_BUF_SIZE; // check size not to exceed MAX size.
-	else ret = len;
+	else ret = len1+len2;
 
 	if (ret == 0)
 	{
@@ -448,8 +456,12 @@ uint16_t macraw_send(uint8_t* buf, uint16_t len)
 		ptr = W51_read(sockaddr+W5100_TX_WR_OFFSET);
 		ptr = (ptr << 8) + W51_read(sockaddr+W5100_TX_WR_OFFSET+1);
 
-		W51_write_data(MACRAW_SOCKET, buf, (uint8_t *)(ptr), len );
-		ptr+= len;
+		W51_write_data(MACRAW_SOCKET, buf1, (uint8_t *)(ptr), len1 );
+		ptr+= len1;
+		if (len2 > 0) {
+			W51_write_data(MACRAW_SOCKET, buf2, (uint8_t *)(ptr), len2 );
+			ptr+= len2;
+		}
 
 		W51_write(sockaddr+W5100_TX_WR_OFFSET, (uint8_t)((ptr & 0xFF00) >> 8));
 		W51_write(sockaddr+W5100_TX_WR_OFFSET+1, (uint8_t)(ptr & 0x00FF));
@@ -482,9 +494,7 @@ uint16_t macraw_recv(uint8_t* buf, uint16_t len)
 
 	sockaddr = W5100_SKT_BASE(MACRAW_SOCKET);
 
-	data_len = W51_read(sockaddr+W5100_RX_RSR_OFFSET);
-	data_len =  ((data_len & 0x00FF) << 8) + W51_read(sockaddr+W5100_RX_RSR_OFFSET+1);
-
+	data_len = recvsize(sockaddr);
 	if (data_len == 0 ) return data_len;
 
 	if (len > 0)

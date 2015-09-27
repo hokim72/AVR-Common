@@ -38,6 +38,8 @@ void disconnect(uint8_t s);
 // len : the data size to be sent
 uint16_t send(uint8_t s, uint8_t* buf, uint16_t len);
 
+uint16_t recvsize(uint16_t sockaddr);
+
 // This function is an application I/F function which is used to receive the data in TCP mode. It continues to wait for data as much as the application wants to receive.
 // return received data size for success else 0.
 // s: socket index
@@ -68,7 +70,7 @@ uint16_t recvfrom(uint8_t s, uint8_t* buf, uint16_t len, uint8_t* addr, uint16_t
 // return This function return send data size for success else 0.
 // buf: a pointer to copy the data to be sent.
 // len: the data size to read.
-uint16_t macraw_send(uint8_t* buf, uint16_t len);
+uint16_t macraw_send(uint8_t* buf1, uint16_t len1, uint8_t* buf2, uint16_t len2);
 
 // This function is an application I/F function which is used to receive the data MAC_RAW mode, and handle the 2 byte length header as well.
 // return This function return received data size for success else 0.
