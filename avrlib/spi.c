@@ -33,7 +33,7 @@ void spiInit()
 	//sbi(SPI_CS_DDR, SPI_CS_PIN);
 	//sbi(SPI_CS_PORT, SPI_CS_PIN);
 	sbi(SPI_MOSI_DDR, SPI_MOSI_PIN);
-	//sbi(SPI_MISO_PORT, SPI_MISO_PIN);
+	sbi(SPI_MISO_PORT, SPI_MISO_PIN);
 	sbi(SPI_SCK_DDR, SPI_SCK_PIN);
 
 	// setup SPI interface :

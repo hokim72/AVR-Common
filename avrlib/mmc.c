@@ -135,8 +135,8 @@ uint8_t mmcSendCommand(uint8_t cmd, uint32_t arg)
 	}
 
 	// Select the card and wait for ready except to stop multiple block read
-	//if (cmd != STOP_TRANSMISSION){
-	if (cmd != STOP_TRANSMISSION && cmd != GO_IDLE_STATE){
+	if (cmd != STOP_TRANSMISSION){
+	//if (cmd != STOP_TRANSMISSION && cmd != GO_IDLE_STATE){
 		mmcDeselect();
 		if (!mmcSelect()) return 0xFF;
 	}
@@ -195,8 +195,8 @@ uint8_t mmcReset(void)
 
 	mmcDeselect();
 
-	for (n=0; n<10; n++)
-		mmcSendCommand( GO_IDLE_STATE, 0); // important!!! 
+	//for (n=0; n<10; n++)
+		//mmcSendCommand( GO_IDLE_STATE, 0); // important!!! 
 										// make MMC send 0xFF packets
 
 	for (n=0; n<10; n++) { // 80 dummy clocks
