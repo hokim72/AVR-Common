@@ -42,9 +42,11 @@ set(SRCS ${TARGET}.c ${AVRLIB_SRCS}
 	apps/simple-httpd/simple-httpd.c
 	apps/dhcpc/dhcpc.c
 )
+set_source_files_properties(${SRCS} PROPERTIES COMPILE_FLAGS "${CPP_FLAGS} ${C_FLAGS}")
+
 
 add_executable(${TARGET}.elf ${SRCS})
-set_target_properties(${TARGET}.elf PROPERTIES COMPILE_FLAGS "${CPP_FLAGS} ${C_FLAGS}")
+#set_target_properties(${TARGET}.elf PROPERTIES COMPILE_FLAGS "${CPP_FLAGS} ${C_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "${LD_FLAGS}")
 
 add_custom_target(${TARGET} ALL

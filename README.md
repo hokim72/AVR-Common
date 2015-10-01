@@ -60,13 +60,23 @@ $ avrdude -p atmega328p -c usbasp -e -U flash:w:firmware.hex
 
 ## AVR Software
 
-http://homepage.hispeed.ch/peterfleury/avr-software.html
+[AVRlib](http://www.procyonengineering.com/embedded/avr/avrlib/)
 
-[busy-wait delay loops](http://www.nongnu.org/avr-libc/user-manual/group__util__delay.html)
+[FatFs](http://elm-chan.org/fsw/ff/00index_e.html)
+
+[avr-uip](https://code.google.com/p/avr-uip/)
 
 [LUFA](http://www.fourwalledcubicle.com/LUFA.php)
 
 [How To Write Simple Bootloader For AVR In C language](http://www.engineersgarage.com/embedded/avr-microcontroller-projects/How-To-Write-a-Simple-Bootloader-For-AVR-In-C-language)
+
+[USnoobie Kit](http://www.seeedstudio.com/wiki/Usnoobie_Kit)
+
+[HID-class USB Serial Communication for AVRs using V-USB](http://rayshobby.net/hid-class-usb-serial-communication-for-avrs-using-v-usb/)
+
+[LUFA bootloader](http://fourwalledcubicle.com/blog/2013/03/the-new-lufa-bootloader/)
+
+[DAN64, An AVR based 8-bit microcomputer](http://www.usebox.net/jjm/dan64/)
 
 [Analyzing Compiler Generated Machine Code(.lss)](http://msoe.us/taylor/tutorial/ce2810/lssfiles)
 
@@ -87,20 +97,6 @@ $ avr-gcc -Os -S -DF_CPU=8000000 -mmcu=atmega328p somecode.c
 > Not all data items need to have values before the program begins running. When you’re reading data from a disk file, for example, you need to have a place for the data to go after it comes in from disk. Data buffers like that are defined in the .bss section of your program. You set aside some number of bytes for a buffer and give the buffer a name, but you don’t say what values are to be present in the buffer.
 
 > There’s a crucial difference between data items defined in the .data section and data items defined in the .bss section: data items in the .data section add to the size of your executable file. Data items in the .bss section do not. A buffer that takes up 16,000 bytes (or more, sometimes much more) can be defined in .bss and add almost nothing (about 50 bytes for the description) to the executable file size.
-
-
-#### AVR USB Bootloader
-
-[USnoobie Kit](http://www.seeedstudio.com/wiki/Usnoobie_Kit)
-
-[HID-class USB Serial Communication for AVRs using V-USB](http://rayshobby.net/hid-class-usb-serial-communication-for-avrs-using-v-usb/)
-
-[Installing Arduino Bootloader on an ATmega32u4](http://electronut.in/bootloader-atmega32u4/)
-
-https://github.com/arduino/Arduino/tree/master/hardware/arduino/avr/bootloaders/caterina
-
-[DAN64, An AVR based 8-bit microcomputer](http://www.usebox.net/jjm/dan64/)
-
 
 #### Anatomy of AVR hex file
 

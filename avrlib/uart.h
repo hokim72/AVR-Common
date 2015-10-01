@@ -55,6 +55,54 @@
 #define UART_RX_BUFFER_SIZE	0x0040
 #endif
 
+#if defined(__AVR_ATmega328P__)
+
+#define UCSRA   	UCSR0A
+#define U2X     	U2X0
+#define UDRE		UDRE0
+
+#define UCSRB		UCSR0B
+#define TXEN		TXEN0
+#define RXEN		RXEN0
+#define TXCIE		TXCIE0	
+#define RXCIE		RXCIE0
+
+#define UCSRC		UCSR0C
+#define UCSZ0		UCSZ00
+#define UCSZ1		UCSZ01
+
+#define UBRRL		UBRR0L
+#define UBRRH		UBRR0H
+
+#define UDR			UDR0
+
+#elif defined(__AVR_ATmega32U4__)
+
+#define UCSRA   	UCSR1A
+#define U2X     	U2X1
+#define UDRE		UDRE1
+
+#define UCSRB		UCSR1B
+#define TXEN		TXEN1
+#define RXEN		RXEN1
+#define TXCIE		TXCIE1	
+#define RXCIE		RXCIE1
+
+#define UCSRC		UCSR1C
+#define UCSZ0		UCSZ10
+#define UCSZ1		UCSZ11
+
+#define UBRRL		UBRR1L
+#define UBRRH		UBRR1H
+
+#define UDR			UDR1
+
+#define USART_TX_vect	USART1_TX_vect
+#define USART_RX_vect	USART1_RX_vect
+
+#endif
+
+
 // functions
 
 // Initializes uart.
@@ -112,6 +160,8 @@ uint8_t uartAddToTxBuffer(uint8_t data);
 
 // Begins transmission of the transmit buffer under interrupt control.
 void uartSendTxBuffer(void);
+
+//void uartSendTxBufferNI(void);
 
 // Sends a block of data via the uart using interrupt control.
 // buffer : pointer to data to be sent

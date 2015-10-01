@@ -16,10 +16,11 @@ set(C_FLAGS "-g -Wall -O${OPTIMIZATION} -mmcu=${MCU} -fno-split-wide-types -mrel
 set(LD_FLAGS "-mmcu=${MCU} -Wl,--section-start=.text=0x7c00 -Wl,--section-start=.version=0x7ffe -Wl,--relax -nostartfiles -nostdlib")
 
 set(SRCS optiboot.c)
+set_source_files_properties(${SRCS} PROPERTIES COMPILE_FLAGS "${CPP_FLAGS} ${C_FLAGS}")
 
 add_executable(${TARGET}.elf ${SRCS})
 target_link_libraries(${TARGET}.elf -lc)
-set_target_properties(${TARGET}.elf PROPERTIES COMPILE_FLAGS "${CPP_FLAGS} ${C_FLAGS}")
+#set_target_properties(${TARGET}.elf PROPERTIES COMPILE_FLAGS "${CPP_FLAGS} ${C_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "${LD_FLAGS}")
 add_custom_target(${TARGET} ALL
     COMMAND ${OBJCOPY} -O ihex -R .eeprom -R .fuse -R .lock -R .signature ${TARGET}.elf ${TARGET}.hex
@@ -27,7 +28,7 @@ add_custom_target(${TARGET} ALL
     COMMAND ${OBJCOPY} -O binary -R .eeprom -R .fuse -R .lock -R .signature ${TARGET}.elf ${TARGET}.bin
     COMMAND ${OBJDUMP} -h -d -S -z ${TARGET}.elf > ${TARGET}.lss
     COMMAND ${NM} -n ${TARGET}.elf > ${TARGET}.sym
-    COMMAND ${SIZE} ${SIZE_MCU_FLAG} ${SIZE_FORMAT_FLAG} ${TARGET}.elf
+	COMMAND ${SIZE} -C --mcu=${MCU} ${TARGET}.elf
     DEPENDS ${TARGET}.elf
 )
 

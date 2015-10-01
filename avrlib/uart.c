@@ -7,7 +7,7 @@
 // UART global variables
 // flag variables
 volatile uint8_t uartReadyTx;		// uartReadyTx flag
-volatile uint8_t uartBufferedTx;	// uartBufferedTx flag
+//volatile uint8_t uartBufferedTx;	// uartBufferedTx flag
 // receive and transmit buffers
 cBuffer uartRxBuffer;				// uart receive buffer
 cBuffer uartTxBuffer;				// uart transmit buffer
@@ -30,20 +30,21 @@ void uartInit(void)
 	UartRxFunc = 0;
 
 #if USE_2X
-	sbi(UCSR0A, U2X0);
+	sbi(UCSRA, U2X);
 #else
-	cbi(UCSR0A, U2X0);
+	cbi(UCSRA, U2X);
 #endif
 
 	// enable RxD/TxD and interrupts
-	outb(UCSR0B, BV(RXCIE0)|BV(TXCIE0)|BV(RXEN0)|BV(TXEN0));
-	outb(UCSR0C, BV(UCSZ01)|BV(UCSZ00)); /* 8 data bits, 1 stop bit */
+	//outb(UCSRB, BV(RXCIE)|BV(TXCIE)|BV(RXEN)|BV(TXEN));
+	outb(UCSRB, BV(RXCIE)|BV(RXEN)|BV(TXEN));
+	outb(UCSRC, BV(UCSZ1)|BV(UCSZ0)); /* 8 data bits, 1 stop bit */
 
 	// set default baud rate
 	uartSetBaudRate(UART_DEFAULT_BAUD_RATE);
 	// initialize states
 	uartReadyTx = TRUE;
-	uartBufferedTx = FALSE;
+	//uartBufferedTx = FALSE;
 	// clear overflow count
 	uartRxOverflow = 0;
 	// enable interrupts
@@ -71,8 +72,8 @@ void uartSetBaudRate(uint32_t baudrate)
 {
 	// calculate division factor for requested baud rate, and set it
 	uint16_t bauddiv = ((F_CPU+(baudrate*8L))/(baudrate*16L)-1);
-	outb(UBRR0L, bauddiv);
-	outb(UBRR0H, bauddiv>>8);
+	outb(UBRRL, bauddiv);
+	outb(UBRRH, bauddiv>>8);
 }
 
 // returns the receive buffer structure
@@ -95,7 +96,7 @@ void uartSendByte(uint8_t txData)
 	// wait for the transmitter to be ready
 	while (!uartReadyTx);
 	// send byte
-	outb(UDR0, txData);
+	outb(UDR, txData);
 	// set ready state to FALSE
 	uartReadyTx = FALSE;
 }
@@ -165,6 +166,7 @@ uint8_t uartAddToTxBuffer(uint8_t data)
 	return bufferAddToEnd(&uartTxBuffer, data);
 }
 
+#if 0
 // start transmission of the current uart Tx buffer contents
 void uartSendTxBuffer(void)
 {
@@ -173,7 +175,19 @@ void uartSendTxBuffer(void)
 	// send the first byte to get things going by interrupts
 	uartSendByte(bufferGetFromFront(&uartTxBuffer));
 }
+#endif
 
+
+void uartSendTxBuffer(void)
+{
+	while (uartTxBuffer.datalength)
+	{
+		loop_until_bit_is_set(UCSRA, UDRE);
+		UDR = bufferGetFromFront(&uartTxBuffer);
+	}
+}
+
+#if 0
 // UART Transmit Complete Interrupt Handler
 ISR(USART_TX_vect)
 {
@@ -184,7 +198,7 @@ ISR(USART_TX_vect)
 		if (uartTxBuffer.datalength)
 		{
 			// send byte from top of buffer
-			outb(UDR0, bufferGetFromFront(&uartTxBuffer));
+			outb(UDR, bufferGetFromFront(&uartTxBuffer));
 		}
 		else
 		{
@@ -201,6 +215,7 @@ ISR(USART_TX_vect)
 		uartReadyTx = TRUE;
 	}
 }
+#endif
 
 // UART Receive Complete Interrupt Handler
 ISR(USART_RX_vect)
@@ -208,7 +223,7 @@ ISR(USART_RX_vect)
 	uint8_t c;
 
 	// get received char
-	c = inb(UDR0);
+	c = inb(UDR);
 
 	// if there's a user function to handle this receive event
 	if (UartRxFunc)

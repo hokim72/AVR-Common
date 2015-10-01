@@ -18,9 +18,10 @@ set(AVRLIB $ENV{AVR_COMMON}/avrlib)
 include_directories(${CMAKE_SOURCE_DIR} ${AVRLIB})
 
 set(SRCS ${TARGET}.c)
+set_source_files_properties(${SRCS} PROPERTIES COMPILE_FLAGS "${CPP_FLAGS} ${C_FLAGS}")
 
 add_executable(${TARGET}.elf ${SRCS})
-set_target_properties(${TARGET}.elf PROPERTIES COMPILE_FLAGS "${CPP_FLAGS} ${C_FLAGS}")
+#set_target_properties(${TARGET}.elf PROPERTIES COMPILE_FLAGS "${CPP_FLAGS} ${C_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "${LD_FLAGS}")
 
 add_custom_target(${TARGET} ALL
