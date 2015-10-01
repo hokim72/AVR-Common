@@ -63,6 +63,10 @@ static bool RunBootloader = true;
  */
 uint16_t MagicBootKey ATTR_NO_INIT;
 
+// Bootloader timeout timer
+#define TIMEOUT_PERIOD 20
+uint16_t Timeout = 0;
+
 
 /** Special startup routine to check if the bootloader was started via a watchdog reset, and if the magic application
  *  start key has been loaded into \ref MagicBootKey. If the bootloader started via the watchdog and the key is valid,
@@ -125,6 +129,10 @@ int main(void)
 	{
 		CDC_Task();
 		USB_USBTask();
+
+		// Time out and reset the AVR
+		if (Timeout > TIMEOUT_PERIOD)
+			RunBootloader = false;
 	}
 
 	/* Disconnect from the host - USB interface will be reset later along with the AVR */
@@ -166,6 +174,9 @@ static void SetupHardware(void)
 ISR(TIMER1_OVF_vect, ISR_BLOCK)
 {
 	LEDs_ToggleLEDs(LEDS_LED1 | LEDS_LED2);
+
+	if (pgm_read_word(0) != 0xFFFF)
+		Timeout++;
 }
 
 /** Event handler for the USB_ConfigurationChanged event. This configures the device's endpoints ready

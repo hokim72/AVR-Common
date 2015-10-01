@@ -80,6 +80,8 @@ $ avrdude -p atmega328p -c usbasp -e -U flash:w:firmware.hex
 
 [Analyzing Compiler Generated Machine Code(.lss)](http://msoe.us/taylor/tutorial/ce2810/lssfiles)
 
+[Using watchdog timer in your projects](http://www.embedds.com/using-watchdog-timer-in-your-projects/)
+
 #### How to convert .c to .S
 
 ```
