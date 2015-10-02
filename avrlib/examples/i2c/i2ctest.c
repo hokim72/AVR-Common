@@ -70,8 +70,6 @@ int main(void)
 		i2cMasterSend(LM75_ADDRESS, 1, buf);
 		i2cMasterReceive(LM75_ADDRESS, 2, buf);
 
-		//uartSendTxBuffer();
-
 
 		rprintf("%d", buf[0]);
 		if (buf[1] & BV(7))

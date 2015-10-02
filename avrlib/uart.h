@@ -42,12 +42,12 @@
 
 // buffer memory allocation defines
 // buffer sizes
-#ifndef UART_TX_BUFFER_SIZE
+//#ifndef UART_TX_BUFFER_SIZE
 // Number of bytes for uart transmit buffer.
 // Do not change this value in uart.h, but rather override
 // it with the desired value defined in your project's CMakeLists.txt
-#define UART_TX_BUFFER_SIZE	0x0040
-#endif
+//#define UART_TX_BUFFER_SIZE	0x0040
+//#endif
 #ifndef UART_RX_BUFFER_SIZE
 // Number of bytes for uart receive buffer.
 // Do not change this value in uart.h, but rather override
@@ -126,7 +126,7 @@ void uartSetBaudRate(uint32_t baudrate);
 cBuffer* uartGetRxBuffer(void);
 
 // Returns pointer to the transmit buffer structure.
-cBuffer* uartGetTxBuffer(void);
+//cBuffer* uartGetTxBuffer(void);
 
 // Sends a single byte over the uart.
 // This functions waits for the uart to be ready,
@@ -156,16 +156,15 @@ void uartFlushReceiveBuffer(void);
 
 // Add byte to end of uart Tx buffer.
 // Returns TRUE if successful, FALSE if failed (no room left in buffer).
-uint8_t uartAddToTxBuffer(uint8_t data);
+//uint8_t uartAddToTxBuffer(uint8_t data);
 
 // Begins transmission of the transmit buffer under interrupt control.
-void uartSendTxBuffer(void);
+//void uartSendTxBuffer(void);
 
-//void uartSendTxBufferNI(void);
 
 // Sends a block of data via the uart using interrupt control.
 // buffer : pointer to data to be sent
 // nBytes : length of data (number of bytes to sent)
-uint8_t uartSendBuffer(char* buffer, uint16_t nBytes);
+//uint8_t uartSendBuffer(char* buffer, uint16_t nBytes);
 
 #endif

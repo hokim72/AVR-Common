@@ -6,17 +6,17 @@
 
 // UART global variables
 // flag variables
-volatile uint8_t uartReadyTx;		// uartReadyTx flag
+//volatile uint8_t uartReadyTx;		// uartReadyTx flag
 //volatile uint8_t uartBufferedTx;	// uartBufferedTx flag
 // receive and transmit buffers
 cBuffer uartRxBuffer;				// uart receive buffer
-cBuffer uartTxBuffer;				// uart transmit buffer
+//cBuffer uartTxBuffer;				// uart transmit buffer
 unsigned short uartRxOverflow;		// receive overflow counter
 
 // using internal ram,
 // automatically allocate space in ram for each buffer
 static unsigned char uartRxData[UART_RX_BUFFER_SIZE];
-static unsigned char uartTxData[UART_TX_BUFFER_SIZE];
+//static unsigned char uartTxData[UART_TX_BUFFER_SIZE];
 
 typedef void (*voidFuncPtru08)(unsigned char);
 volatile static voidFuncPtru08 UartRxFunc;
@@ -43,7 +43,7 @@ void uartInit(void)
 	// set default baud rate
 	uartSetBaudRate(UART_DEFAULT_BAUD_RATE);
 	// initialize states
-	uartReadyTx = TRUE;
+	//uartReadyTx = TRUE;
 	//uartBufferedTx = FALSE;
 	// clear overflow count
 	uartRxOverflow = 0;
@@ -57,7 +57,7 @@ void uartInitBuffers(void)
 	// initialize the UART receive buffer
 	bufferInit(&uartRxBuffer, uartRxData, UART_RX_BUFFER_SIZE);
 	// initialize the UART transmit buffer
-	bufferInit(&uartTxBuffer, uartTxData, UART_TX_BUFFER_SIZE);
+	//bufferInit(&uartTxBuffer, uartTxData, UART_TX_BUFFER_SIZE);
 }
 
 // redirects received data to a user function
@@ -83,22 +83,25 @@ cBuffer* uartGetRxBuffer(void)
 	return &uartRxBuffer;
 }
 
+#if 0
 // returns the transmit buffer structure
 cBuffer* uartGetTxBuffer(void)
 {
 	// return tx buffer pointer
 	return &uartTxBuffer;
 }
+#endif
 
 // transmits a byte over the uart
 void uartSendByte(uint8_t txData)
 {
 	// wait for the transmitter to be ready
-	while (!uartReadyTx);
+	//while (!uartReadyTx);
 	// send byte
+	loop_until_bit_is_set(UCSRA, UDRE);
 	outb(UDR, txData);
 	// set ready state to FALSE
-	uartReadyTx = FALSE;
+	//uartReadyTx = FALSE;
 }
 
 // gets a single byte from the uart receive buffer (getchar-style)
@@ -159,6 +162,7 @@ uint8_t uartReceiveBufferIsEmpty(void)
 	}
 }
 
+#if 0
 // add byte to end of uart Tx buffer
 uint8_t uartAddToTxBuffer(uint8_t data)
 {
@@ -166,7 +170,6 @@ uint8_t uartAddToTxBuffer(uint8_t data)
 	return bufferAddToEnd(&uartTxBuffer, data);
 }
 
-#if 0
 // start transmission of the current uart Tx buffer contents
 void uartSendTxBuffer(void)
 {
@@ -175,8 +178,6 @@ void uartSendTxBuffer(void)
 	// send the first byte to get things going by interrupts
 	uartSendByte(bufferGetFromFront(&uartTxBuffer));
 }
-#endif
-
 
 void uartSendTxBuffer(void)
 {
@@ -187,7 +188,6 @@ void uartSendTxBuffer(void)
 	}
 }
 
-#if 0
 // UART Transmit Complete Interrupt Handler
 ISR(USART_TX_vect)
 {

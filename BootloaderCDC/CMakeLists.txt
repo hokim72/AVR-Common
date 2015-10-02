@@ -87,7 +87,8 @@ string(REPLACE ";" " " LUFA_OPTS "${LUFA_OPTS}")
 include($ENV{AVR_COMMON}/lufa140928.cmake)
 
 # List C source files here. (C dependencies are automatically generated.)
-set(SRCS ${TARGET}.c Descriptors.c BootloaderAPI.c ${LUFA_SRC_USB})
+#set(SRCS ${TARGET}.c Descriptors.c BootloaderAPI.c ${LUFA_SRC_USB})
+set(SRCS ${TARGET}.c Descriptors.c ${LUFA_SRC_USB})
 
 # Place -D or -U options here for C sources
 set(CPP_FLAGS 

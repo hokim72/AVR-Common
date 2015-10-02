@@ -82,6 +82,10 @@ $ avrdude -p atmega328p -c usbasp -e -U flash:w:firmware.hex
 
 [Using watchdog timer in your projects](http://www.embedds.com/using-watchdog-timer-in-your-projects/)
 
+[Watchdog Reset](http://www.avrfreaks.net/forum/watchdog-reset-code-question)
+
+[Three ways to reset](http://www.xappsoftware.com/wordpress/2013/06/24/three-ways-to-reset-an-arduino-board-by-code/)
+
 #### How to convert .c to .S
 
 ```
