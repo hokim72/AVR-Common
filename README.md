@@ -86,6 +86,8 @@ $ avrdude -p atmega328p -c usbasp -e -U flash:w:firmware.hex
 
 [Three ways to reset](http://www.xappsoftware.com/wordpress/2013/06/24/three-ways-to-reset-an-arduino-board-by-code/)
 
+[Using Standard IO Streams in AVR GCC](http://www.embedds.com/using-standard-io-streams-in-avr-gcc/)
+
 #### How to convert .c to .S
 
 ```
