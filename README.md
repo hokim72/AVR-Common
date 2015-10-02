@@ -88,6 +88,8 @@ $ avrdude -p atmega328p -c usbasp -e -U flash:w:firmware.hex
 
 [Using Standard IO Streams in AVR GCC](http://www.embedds.com/using-standard-io-streams-in-avr-gcc/)
 
+[Merging Bootloader HEX-File and Application HEX-File to one](http://www.avrfreaks.net/forum/merging-bootloader-hex-file-and-application-hex-file-one)
+
 #### How to convert .c to .S
 
 ```
@@ -115,3 +117,5 @@ https://en.wikipedia.org/wiki/Intel_HEX
 #### Dump and Disassemble AVR uC Flash Memory
 
 https://ucexperiment.wordpress.com/2015/01/04/dump-and-disassemble-avr-%C2%B5c-flash-memory/
+
+#### [AT90USB82 - HWB connection options](http://www.avrfreaks.net/forum/at90usb82-hwb-connection-options)
